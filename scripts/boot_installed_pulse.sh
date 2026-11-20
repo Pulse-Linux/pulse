@@ -36,7 +36,7 @@ exec qemu-system-x86_64 \
     -cpu host \
     -drive "file=${DISK_PATH},if=virtio,format=qcow2" \
     -boot "order=c" \
-    -vga virtio \
+    -vga std \
     -display "gtk,zoom-to-fit=on" \
     -device virtio-net-pci,netdev=net0 \
     -netdev user,id=net0 \

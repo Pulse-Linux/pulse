@@ -41,20 +41,20 @@ echo "Booting Pulse Linux 1.0 (Vanguard GNOME Workstation)..."
 
 menuentry "Pulse Linux 1.0 (Live GNOME AMD64 - Default)" --class pulse --class gnu-linux --class gnu --class os {
     echo "Loading Pulse Linux kernel..."
-    linux /live/vmlinuz boot=live quiet splash console=tty0 console=ttyS0,115200
+    linux /live/vmlinuz boot=live console=tty0
     echo "Loading initial ramdisk..."
     initrd /live/initrd.img
 }
 
 menuentry "Pulse Linux 1.0 (Live GNOME AMD64 - Safe Graphics / Nomodeset)" --class pulse --class gnu-linux {
     echo "Loading Pulse Linux in Safe Graphics Mode..."
-    linux /live/vmlinuz boot=live nomodeset console=tty0 console=ttyS0,115200
+    linux /live/vmlinuz boot=live nomodeset console=tty0
     initrd /live/initrd.img
 }
 
 menuentry "Pulse Linux 1.0 (Live GNOME AMD64 - Verbose Diagnostic Boot)" --class pulse --class gnu-linux {
     echo "Loading Pulse Linux in Verbose Diagnostic Mode..."
-    linux /live/vmlinuz boot=live debug verbose console=tty0 console=ttyS0,115200
+    linux /live/vmlinuz boot=live debug verbose console=tty0
     initrd /live/initrd.img
 }
 

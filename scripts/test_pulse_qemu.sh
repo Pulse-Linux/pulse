@@ -68,7 +68,7 @@ exec qemu-system-x86_64 \
     -cdrom "${ISO_PATH}" \
     -drive "file=${DISK_PATH},if=virtio,format=qcow2" \
     -boot "menu=on,order=d" \
-    -vga virtio \
+    -vga std \
     -display "${DISPLAY_OPT}" \
     -device virtio-net-pci,netdev=net0 \
     -netdev user,id=net0 \

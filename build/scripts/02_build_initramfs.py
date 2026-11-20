@@ -2,7 +2,7 @@
 """
 Pulse Linux Live Initramfs Builder
 Constructs the boot initial ramdisk (initrd.img) containing kernel modules,
-statically linked busybox utilities, and the Pulse Linux live medium discovery & overlayfs orchestrator.
+statically linked busybox utilities, display/DRM drivers, and the Pulse Linux live medium discovery & overlayfs orchestrator.
 """
 
 import os
@@ -28,6 +28,8 @@ TARGET_MODULE_NAMES = [
     # Virtualization (QEMU, KVM, VirtualBox)
     "virtio.ko", "virtio_pci.ko", "virtio_pci_modern_dev.ko", "virtio_pci_legacy_dev.ko",
     "virtio_blk.ko", "virtio_ring.ko", "virtio_scsi.ko",
+    # Display & DRM graphics drivers (QEMU std, virtio, VirtualBox, QXL)
+    "bochs.ko", "virtio-gpu.ko", "vboxvideo.ko", "qxl.ko", "drm.ko", "drm_kms_helper.ko",
     # CRC & Crypto
     "crc32c_generic.ko", "crc32c-intel.ko", "crc32_generic.ko", "crc32-pclmul.ko",
     "crc-t10dif.ko", "crct10dif_common.ko"
@@ -51,9 +53,9 @@ echo ""
 # Populate dev nodes via mdev
 mdev -s 2>/dev/null || true
 
-# 2. Load storage and virtualization drivers
-echo "[+] Loading storage and filesystem drivers..."
-for mod in isofs squashfs overlay loop cdrom scsi_mod scsi_common sr_mod sd_mod virtio virtio_ring virtio_pci virtio_blk virtio_scsi ahci libahci libata ata_piix nvme; do
+# 2. Load storage, virtualization, and display drivers
+echo "[+] Loading storage, virtualization, and display drivers..."
+for mod in bochs virtio-gpu vboxvideo qxl isofs squashfs overlay loop cdrom scsi_mod scsi_common sr_mod sd_mod virtio virtio_ring virtio_pci virtio_blk virtio_scsi ahci libahci libata ata_piix nvme; do
     modprobe "$mod" 2>/dev/null || true
 done
 
