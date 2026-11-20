@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pulse Linux | One Operating System. Two Worlds. Unlimited Possibilities.</title>
+  <meta name="description" content="Pulse Linux is a modern, high-performance Linux operating system built on rock-solid Debian 12 Bookworm, combining developer productivity with a modular cybersecurity arsenal.">
+  <meta name="keywords" content="Pulse Linux, Debian 12, Linux OS, GNOME Desktop, Cybersecurity, Developer OS, Kali Linux, ISO Download">
+  
+  <!-- Modern Web Guidance: meta color-scheme and FOUC prevention -->
+  <meta name="color-scheme" content="light dark">
+  <script>
+    document.querySelector('meta[name="color-scheme"]').content = localStorage.getItem("color-scheme") ?? "light dark";
+  </script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/pulse-logo.svg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            pulse: {
+              violet: '#7852FF',
+              cyan: '#00D2FF',
+              neon: '#00FFCC',
+              dark: '#060812',
+              surface: '#0F1322',
+              card: 'rgba(19, 24, 46, 0.7)'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="selection:bg-violet-600 selection:text-white">
+
+  <!-- ========================================================
+       TOP NAVIGATION BAR
+       ======================================================== -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl bg-slate-950/75 border-b border-white/10 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center gap-3 group text-decoration-none">
+        <div class="relative w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-violet-600/30 to-cyan-500/30 border border-violet-500/40 group-hover:border-cyan-400 transition-all duration-300">
+          <img src="assets/images/pulse-logo.svg" alt="Pulse Linux Logo" class="w-7 h-7 drop-shadow-md">
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-xl tracking-tight text-white group-hover:text-cyan-300 transition-colors">PULSE</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-violet-600/30 text-violet-300 border border-violet-500/30 font-mono">v1.0</span>
+          </div>
+          <span class="text-[10px] text-slate-400 font-mono tracking-wider -mt-1 uppercase">Vanguard Release</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-300">
+        <a href="#features" class="hover:text-cyan-300 transition-colors">Features</a>
+        <a href="#architecture" class="hover:text-cyan-300 transition-colors">Architecture</a>
+        <a href="#editions" class="hover:text-cyan-300 transition-colors">Editions</a>
+        <a href="themes.html" class="hover:text-cyan-300 transition-colors">Themes & 4K</a>
+        <a href="docs.html" class="hover:text-cyan-300 transition-colors">Documentation</a>
+        <a href="download.html" class="hover:text-cyan-300 transition-colors">Downloads</a>
+      </nav>
+
+      <!-- Right CTAs & Tools -->
+      <div class="hidden md:flex items-center gap-4">
+        <!-- Color Scheme Toggle -->
+        <button id="theme-toggle-btn" type="button" class="p-2 rounded-xl bg-white/5 border border-white/10 hover:border-violet-500/50 text-slate-300 hover:text-white transition-all" aria-label="Toggle theme">
+          <!-- Icon injected by JS -->
+        </button>
+
+        <!-- GitHub Org Link -->
+        <a href="https://github.com/Pulse-Linux" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-xs font-mono text-slate-200 transition-all">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          <span>@Pulse-Linux</span>
+        </a>
+
+        <!-- Download ISO Pill -->
+        <a href="#download" class="btn-cyan text-xs !py-2 !px-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          <span>Get ISO (615 MB)</span>
+        </a>
+      </div>
+
+      <!-- Mobile Menu Toggle Button -->
+      <button id="mobile-menu-toggle" type="button" class="md:hidden p-2 rounded-xl bg-white/5 border border-white/10 text-slate-300" aria-expanded="false" aria-label="Toggle navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-nav" class="closed md:hidden px-4 pt-3 pb-6 border-b border-white/10 bg-slate-950/95 space-y-3">
+      <a href="#features" class="block py-2 text-slate-300 hover:text-white font-medium">Features</a>
+      <a href="#architecture" class="block py-2 text-slate-300 hover:text-white font-medium">Architecture</a>
+      <a href="#editions" class="block py-2 text-slate-300 hover:text-white font-medium">Editions</a>
+      <a href="themes.html" class="block py-2 text-slate-300 hover:text-white font-medium">Themes & 4K Wallpapers</a>
+      <a href="docs.html" class="block py-2 text-slate-300 hover:text-white font-medium">Documentation</a>
+      <a href="download.html" class="block py-2 text-cyan-400 font-semibold">Download ISOs</a>
+      <a href="https://github.com/Pulse-Linux" target="_blank" rel="noopener noreferrer" class="block py-2 text-slate-400 font-mono text-sm">GitHub: @Pulse-Linux</a>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       HERO SECTION
+       ======================================================== -->
+  <section class="relative pt-20 pb-28 overflow-hidden">
+    <!-- Glow Backdrop Effects -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-gradient-to-tr from-violet-600/25 via-cyan-500/20 to-transparent blur-[120px] pointer-events-none -z-10 rounded-full"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      
+      <!-- Vanguard Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-violet-950/60 border border-violet-500/40 text-violet-300 text-xs sm:text-sm font-medium mb-8 backdrop-blur-md shadow-lg shadow-violet-900/20">
+        <span class="pulse-beacon"></span>
+        <span>Pulse Linux 1.0 (Vanguard) is officially released</span>
+        <span class="text-slate-400">|</span>
+        <a href="#download" class="text-cyan-300 hover:underline inline-flex items-center gap-1 font-semibold">
+          Download now &rarr;
+        </a>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight sm:leading-none">
+        One Operating System.<br>
+        <span class="text-gradient-pulse">Two Worlds. Unlimited Possibilities.</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="max-w-3xl mx-auto text-lg sm:text-xl text-slate-300 mb-10 leading-relaxed font-normal">
+        The unified Linux workstation engineered for software creators, system architects, and cybersecurity specialists. Built upon rock-solid <strong>Debian 12 Bookworm</strong> stability, streamlined developer ergonomics, and modular security tool isolation.
+      </p>
+
+      <!-- Primary Action Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
+        <a href="#download" class="btn-cyan w-full sm:w-auto text-base">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          <span>Download Workstation ISO (615 MB)</span>
+        </a>
+        <a href="docs.html" class="btn-secondary w-full sm:w-auto text-base">
+          <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          <span>Quickstart Documentation</span>
+        </a>
+        <a href="https://github.com/Pulse-Linux/pulse" target="_blank" rel="noopener noreferrer" class="btn-secondary w-full sm:w-auto text-base">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          <span>Star on GitHub</span>
+        </a>
+      </div>
+
+      <!-- Feature Metrics Bar -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto pt-6 border-t border-white/10 text-left">
+        <div class="p-3">
+          <div class="text-2xl font-bold text-white font-mono">615 MB</div>
+          <div class="text-xs text-slate-400">Ultra-compact GNOME ISO</div>
+        </div>
+        <div class="p-3">
+          <div class="text-2xl font-bold text-cyan-400 font-mono">Debian 12</div>
+          <div class="text-xs text-slate-400">Bookworm LTS kernel 6.1</div>
+        </div>
+        <div class="p-3">
+          <div class="text-2xl font-bold text-violet-400 font-mono">5 Themes</div>
+          <div class="text-xs text-slate-400">With 4K vector wallpapers</div>
+        </div>
+        <div class="p-3">
+          <div class="text-2xl font-bold text-emerald-400 font-mono">Sandboxed</div>
+          <div class="text-xs text-slate-400">Zero-conflict Kali isolation</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       INTERACTIVE OS SHOWCASE & LIVE SIMULATOR
+       ======================================================== -->
+  <section class="py-16 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center mb-10">
+        <span class="text-xs font-mono font-semibold tracking-widest text-cyan-400 uppercase">Live Experience</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-1">Explore Pulse Linux Desktop & CLI</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto mt-2">Test drive the interface, switch dynamic wallpaper themes in real time, and inspect the native Pulse command suite.</p>
+      </div>
+
+      <!-- Desktop Frame Mockup -->
+      <div class="relative rounded-2xl p-2 sm:p-4 bg-slate-900/80 border border-violet-500/30 shadow-2xl shadow-violet-950/50 backdrop-blur-xl">
+        
+        <!-- Controls Bar Above Screen -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10 px-2">
+          
+          <!-- View switcher tabs -->
+          <div class="flex items-center gap-1.5 p-1 bg-white/5 rounded-xl border border-white/10" role="tablist" aria-label="Mockup Screen Modes">
+            <button type="button" class="mockup-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-violet-600 text-white transition-all" data-view="desktop" aria-selected="true">
+              🖥️ GNOME Workstation
+            </button>
+            <button type="button" class="mockup-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-white/10 text-slate-300 hover:text-white transition-all" data-view="terminal" aria-selected="false">
+              ⚡ Pulse CLI Suite
+            </button>
+            <button type="button" class="mockup-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-white/10 text-slate-300 hover:text-white transition-all" data-view="security" aria-selected="false">
+              🛡️ Security Arsenal
+            </button>
+          </div>
+
+          <!-- Live Wallpaper Switcher Pills -->
+          <div class="flex items-center gap-2 overflow-x-auto py-1">
+            <span class="text-xs text-slate-400 font-mono hidden sm:inline">Theme:</span>
+            <button type="button" class="theme-selector-btn text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 border border-violet-500/30 ring-2 ring-cyan-400 active transition-all flex items-center gap-1.5" data-theme="dark">
+              <span class="w-2.5 h-2.5 rounded-full bg-violet-600"></span> Dark
+            </button>
+            <button type="button" class="theme-selector-btn text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 border border-violet-500/30 hover:border-cyan-400 transition-all flex items-center gap-1.5" data-theme="light">
+              <span class="w-2.5 h-2.5 rounded-full bg-sky-300"></span> Light
+            </button>
+            <button type="button" class="theme-selector-btn text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 border border-violet-500/30 hover:border-cyan-400 transition-all flex items-center gap-1.5" data-theme="cyber-neon">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> Cyber Neon
+            </button>
+            <button type="button" class="theme-selector-btn text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 border border-violet-500/30 hover:border-cyan-400 transition-all flex items-center gap-1.5" data-theme="midnight">
+              <span class="w-2.5 h-2.5 rounded-full bg-neutral-900 border border-slate-600"></span> Midnight
+            </button>
+            <button type="button" class="theme-selector-btn text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 border border-violet-500/30 hover:border-cyan-400 transition-all flex items-center gap-1.5" data-theme="security-slate">
+              <span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span> Security Slate
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Simulated Monitor Screen -->
+        <div id="mockup-screen-bg" class="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-xl overflow-hidden shadow-inner border border-white/10 bg-cover bg-center transition-all duration-500" style="background-image: url('assets/wallpapers/pulse-dark-4k.svg');">
+          
+          <!-- VIEW 1: GNOME Workstation Desktop View -->
+          <div id="view-desktop" class="mockup-screen-view w-full h-full flex flex-col justify-between p-3 sm:p-6 bg-black/30 backdrop-blur-[1px]">
+            
+            <!-- GNOME Top Bar -->
+            <div class="h-8 px-4 rounded-xl bg-slate-950/80 backdrop-blur-md border border-white/10 flex items-center justify-between text-xs text-slate-200 font-sans shadow-md">
+              <div class="flex items-center gap-4">
+                <span class="font-bold text-white flex items-center gap-1.5">
+                  <img src="assets/images/pulse-logo.svg" alt="" class="w-4 h-4">
+                  Activities
+                </span>
+                <span class="text-slate-400 hidden sm:inline">Terminal</span>
+                <span class="text-slate-400 hidden sm:inline">Files</span>
+              </div>
+              <div class="font-semibold text-white">Nov 20 14:30</div>
+              <div class="flex items-center gap-3 text-slate-300">
+                <span>📶</span>
+                <span>🔊</span>
+                <span>🔋 100%</span>
+              </div>
+            </div>
+
+            <!-- Floating Window: GNOME Terminal / App Preview -->
+            <div class="max-w-xl mx-auto w-full my-auto terminal-window border border-violet-500/50 shadow-2xl">
+              <div class="terminal-header">
+                <div class="terminal-dots">
+                  <div class="terminal-dot dot-red"></div>
+                  <div class="terminal-dot dot-yellow"></div>
+                  <div class="terminal-dot dot-green"></div>
+                </div>
+                <div class="text-xs text-slate-400 font-mono">pulse@vanguard: ~ (bash)</div>
+                <div class="w-12"></div>
+              </div>
+              <div class="terminal-body space-y-2 text-xs sm:text-sm">
+                <div class="text-slate-300">
+                  <span class="text-violet-400 font-bold">pulse@vanguard:~$</span> <span class="text-white">pulse info</span>
+                </div>
+                <div class="text-slate-400 font-mono leading-relaxed">
+                  <span class="text-cyan-400">─────────────────────────────────────────────────────</span><br>
+                  <span class="text-white font-bold">Pulse Linux 1.0 (Vanguard)</span> • 64-bit Workstation<br>
+                  <span class="text-slate-400">OS Kernel:</span>     Debian 6.1.0-28-amd64 (SMP PREEMPT)<br>
+                  <span class="text-slate-400">Desktop Shell:</span> GNOME 43.9 (Wayland compositor)<br>
+                  <span class="text-slate-400">Base Packages:</span> Debian 12 Bookworm + Ubuntu Dev Tools<br>
+                  <span class="text-slate-400">Security Suite:</span> Modular Kali Isolation Engine [Active]<br>
+                  <span class="text-cyan-400">─────────────────────────────────────────────────────</span><br>
+                  <span class="text-emerald-400">✔ All core daemons running. System ready.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- GNOME Dock -->
+            <div class="mx-auto px-4 py-2 rounded-2xl bg-slate-950/80 backdrop-blur-md border border-white/10 flex items-center gap-3 shadow-xl">
+              <div title="GNOME Files (Nautilus)" class="p-2 rounded-xl bg-violet-600/30 hover:bg-violet-600/60 cursor-pointer transition-all">📁</div>
+              <div title="GNOME Terminal" class="p-2 rounded-xl bg-violet-600/30 hover:bg-violet-600/60 cursor-pointer transition-all">📟</div>
+              <div title="Gedit Text Editor" class="p-2 rounded-xl bg-violet-600/30 hover:bg-violet-600/60 cursor-pointer transition-all">📝</div>
+              <div title="Eye of GNOME" class="p-2 rounded-xl bg-violet-600/30 hover:bg-violet-600/60 cursor-pointer transition-all">🖼️</div>
+              <div title="System Monitor" class="p-2 rounded-xl bg-violet-600/30 hover:bg-violet-600/60 cursor-pointer transition-all">📊</div>
+              <div title="Pulse Installer" class="p-2 rounded-xl bg-cyan-500/30 hover:bg-cyan-500/60 cursor-pointer transition-all">💿</div>
+              <div title="App Grid" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 cursor-pointer transition-all">⋮⋮⋮</div>
+            </div>
+
+          </div>
+
+          <!-- VIEW 2: Pulse CLI Suite Interactive Terminal -->
+          <div id="view-terminal" class="mockup-screen-view hidden w-full h-full p-4 sm:p-8 bg-slate-950/90 flex flex-col justify-between font-mono">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-white/10 text-xs text-slate-400 mb-4">
+                <span>⚡ Pulse Interactive CLI Simulator</span>
+                <span class="text-cyan-400">Click any command button below:</span>
+              </div>
+
+              <!-- Terminal Output Display Box -->
+              <div id="interactive-term-output" class="p-4 rounded-xl bg-slate-900 border border-violet-500/30 text-xs sm:text-sm font-mono text-slate-200 leading-relaxed min-h-[180px]">
+                <span class="text-violet-400 font-bold">pulse@vanguard:~$ pulse info</span><br>
+                <span class="text-cyan-400">───────────────────────────────────────────────────</span><br>
+                <span class="text-white font-semibold">Pulse Linux 1.0 (Vanguard) x86_64</span><br>
+                <span class="text-slate-400">Base System:</span>     Debian GNU/Linux 12 (Bookworm)<br>
+                <span class="text-slate-400">Desktop:</span>         GNOME 43.9 (Wayland &amp; X11)<br>
+                <span class="text-slate-400">Kernel:</span>          6.1.0-28-amd64 #1 SMP PREEMPT_DYNAMIC<br>
+                <span class="text-slate-400">Developer Stack:</span> Git, Python 3.11, Rust, Go, Node.js<br>
+                <span class="text-slate-400">Security Suite:</span>  Modular Kali Isolation Engine (Active)<br>
+                <span class="text-cyan-400">───────────────────────────────────────────────────</span><br>
+                <span class="text-emerald-400">✔ System Status: All modules verified healthy</span>
+              </div>
+            </div>
+
+            <!-- Command Clickable Pills -->
+            <div class="flex flex-wrap gap-2 pt-4">
+              <button type="button" class="term-interactive-btn px-3 py-1.5 rounded-lg bg-cyan-500/20 border border-cyan-400 text-cyan-300 text-xs font-mono hover:bg-cyan-500/30" data-cmd="pulse info">
+                $ pulse info
+              </button>
+              <button type="button" class="term-interactive-btn px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 text-xs font-mono hover:bg-slate-700 hover:border-slate-500" data-cmd="pulse doctor">
+                $ pulse doctor
+              </button>
+              <button type="button" class="term-interactive-btn px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 text-xs font-mono hover:bg-slate-700 hover:border-slate-500" data-cmd="pulse theme">
+                $ pulse theme --list
+              </button>
+              <button type="button" class="term-interactive-btn px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 text-xs font-mono hover:bg-slate-700 hover:border-slate-500" data-cmd="pulse install">
+                $ pulse install --help
+              </button>
+            </div>
+          </div>
+
+          <!-- VIEW 3: Cybersecurity Arsenal Module View -->
+          <div id="view-security" class="mockup-screen-view hidden w-full h-full p-4 sm:p-8 bg-slate-950/95 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-4 pb-2 border-b border-white/10">
+                <span class="text-emerald-400 font-mono text-sm font-bold">🛡️ MODULAR KALI SECURITY ENGINE</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/40">Sandboxed Isolation</span>
+              </div>
+              <p class="text-slate-300 text-xs sm:text-sm mb-6 leading-relaxed">
+                Pulse Linux lets you access Kali Linux offensive security and penetration testing utilities without polluting your primary system packages or destabilizing core libraries.
+              </p>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="p-3 rounded-xl bg-slate-900 border border-white/10">
+                  <div class="font-bold text-white text-xs mb-1">Network Recon</div>
+                  <div class="text-[11px] text-slate-400">nmap, masscan, wireshark, bettercap, aircrack-ng</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-900 border border-white/10">
+                  <div class="font-bold text-white text-xs mb-1">Web Security</div>
+                  <div class="text-[11px] text-slate-400">burpsuite, sqlmap, gobuster, nikto, ffuf</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-900 border border-white/10">
+                  <div class="font-bold text-white text-xs mb-1">Binary & Exploitation</div>
+                  <div class="text-[11px] text-slate-400">metasploit, gdb-gef, ghidra, radare2, pwntools</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-xs text-emerald-300 font-mono">
+              $ pulse module enable kali-core &amp;&amp; pulse module run nmap -sC -sV target.local
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       THE "TWO WORLDS" ARCHITECTURE (DEEP DIVE)
+       ======================================================== -->
+  <section id="architecture" class="py-20 bg-slate-950/50 border-y border-white/5 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-16">
+        <span class="text-xs font-mono font-semibold tracking-widest text-violet-400 uppercase">Engineered Architecture</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">The Triad of Power</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto mt-3">Why choose between a rock-solid workstation and a penetration testing powerhouse? Pulse Linux delivers both without compromise.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Pillar 1: Debian 12 Base -->
+        <div class="glass-panel p-8 relative flex flex-col justify-between">
+          <div>
+            <div class="feature-icon-wrapper">
+              <span class="text-2xl">🏛️</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Debian 12 Bookworm Base</h3>
+            <p class="text-sm text-slate-300 leading-relaxed mb-4">
+              Rock-solid stability, zero surprise breaking changes, and the world's most tested package management foundation. Powered by Linux Kernel 6.1 LTS with long-term security backports.
+            </p>
+          </div>
+          <ul class="text-xs text-slate-400 space-y-2 border-t border-white/10 pt-4 font-mono">
+            <li class="flex items-center gap-2">✔ Stable APT Ecosystem</li>
+            <li class="flex items-center gap-2">✔ Systemd Service Standards</li>
+            <li class="flex items-center gap-2">✔ Broadest Hardware Driver Support</li>
+          </ul>
+        </div>
+
+        <!-- Pillar 2: Developer Ergonomics -->
+        <div class="glass-panel p-8 relative flex flex-col justify-between border-violet-500/40 shadow-lg shadow-violet-900/20">
+          <div>
+            <div class="feature-icon-wrapper !bg-gradient-to-br !from-violet-600/30 !to-violet-400/20 !text-violet-400">
+              <span class="text-2xl">💻</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Ubuntu Developer Ergonomics</h3>
+            <p class="text-sm text-slate-300 leading-relaxed mb-4">
+              Effortless developer workflow with pre-configured Git, Python 3.11, modern build toolchains, fast Zstandard compression, and zero desktop telemetry or commercial clutter.
+            </p>
+          </div>
+          <ul class="text-xs text-slate-400 space-y-2 border-t border-white/10 pt-4 font-mono">
+            <li class="flex items-center gap-2">✔ GNOME 43 Clean Desktop Suite</li>
+            <li class="flex items-center gap-2">✔ Modern Terminal &amp; Text Editing</li>
+            <li class="flex items-center gap-2">✔ Native Container &amp; Cloud Ready</li>
+          </ul>
+        </div>
+
+        <!-- Pillar 3: Kali Modular Security -->
+        <div class="glass-panel p-8 relative flex flex-col justify-between">
+          <div>
+            <div class="feature-icon-wrapper !bg-gradient-to-br !from-emerald-500/20 !to-cyan-400/20 !text-emerald-400">
+              <span class="text-2xl">🛡️</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Modular Security Arsenal</h3>
+            <p class="text-sm text-slate-300 leading-relaxed mb-4">
+              Integrated access to Kali Linux penetration testing tools with AppArmor sandboxed isolation. Run network discovery, packet capture, and vulnerability audits without package conflicts.
+            </p>
+          </div>
+          <ul class="text-xs text-slate-400 space-y-2 border-t border-white/10 pt-4 font-mono">
+            <li class="flex items-center gap-2">✔ Isolated Security Namespaces</li>
+            <li class="flex items-center gap-2">✔ On-demand Toolchain Activation</li>
+            <li class="flex items-center gap-2">✔ Native AppArmor &amp; Audit Logs</li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       CORE FEATURES & UTILITIES GRID
+       ======================================================== -->
+  <section id="features" class="py-20 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-16">
+        <span class="text-xs font-mono font-semibold tracking-widest text-cyan-400 uppercase">Features &amp; Built-in Apps</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Everything You Need Out of the Box</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto mt-3">From essential desktop utilities to command-line administration, Pulse Linux comes ready to work immediately.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- App 1: Nautilus -->
+        <div class="feature-card">
+          <div class="text-3xl mb-3">📁</div>
+          <h4 class="font-bold text-white text-lg mb-1">Nautilus File Manager</h4>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Fast file browsing with tabbed navigation, archive extraction, network shares (SSH/SFTP/Samba), and integrated search.
+          </p>
+        </div>
+
+        <!-- App 2: GNOME Terminal -->
+        <div class="feature-card">
+          <div class="text-3xl mb-3">📟</div>
+          <h4 class="font-bold text-white text-lg mb-1">GNOME Terminal</h4>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Multi-tab terminal emulator tailored with custom Pulse color palettes, UTF-8 font support, and lightning-fast scrolling.
+          </p>
+        </div>
+
+        <!-- App 3: Gedit -->
+        <div class="feature-card">
+          <div class="text-3xl mb-3">📝</div>
+          <h4 class="font-bold text-white text-lg mb-1">Gedit Text Editor</h4>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Clean code and prose editing with syntax highlighting for 50+ languages, line numbering, and bracket matching.
+          </p>
+        </div>
+
+        <!-- App 4: Eye of GNOME -->
+        <div class="feature-card">
+          <div class="text-3xl mb-3">🖼️</div>
+          <h4 class="font-bold text-white text-lg mb-1">Eye of GNOME (eog)</h4>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Rapid image viewer with full zoom, rotation, color profile rendering, and smooth wallpaper previewing.
+          </p>
+        </div>
+
+        <!-- App 5: File Roller -->
+        <div class="feature-card">
+          <div class="text-3xl mb-3">📦</div>
+          <h4 class="font-bold text-white text-lg mb-1">File Roller Archive Manager</h4>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Universal archive management supporting tar.gz, zip, 7z, tar.xz, and zstandard compression formats.
+          </p>
+        </div>
+
+        <!-- App 6: System Monitor -->
+        <div class="feature-card">
+          <div class="text-3xl mb-3">📊</div>
+          <h4 class="font-bold text-white text-lg mb-1">GNOME System Monitor</h4>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Real-time CPU cores, memory, swap, disk I/O and network usage graphs with detailed process termination controls.
+          </p>
+        </div>
+
+        <!-- App 7: GNOME Calculator -->
+        <div class="feature-card">
+          <div class="text-3xl mb-3">🔢</div>
+          <h4 class="font-bold text-white text-lg mb-1">GNOME Calculator</h4>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Basic, advanced, financial, and programmer calculator with binary, octal, decimal, and hexadecimal conversions.
+          </p>
+        </div>
+
+        <!-- App 8: Pulse CLI -->
+        <div class="feature-card border-cyan-500/40">
+          <div class="text-3xl mb-3">⚡</div>
+          <h4 class="font-bold text-white text-lg mb-1">Pulse CLI Suite</h4>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Integrated diagnostic, theming, health check, and system administration toolkit (`pulse info`, `pulse doctor`, `pulse theme`).
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       EDITIONS COMPARISON: WORKSTATION VS CORE
+       ======================================================== -->
+  <section id="editions" class="py-20 bg-slate-950/60 border-y border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-16">
+        <span class="text-xs font-mono font-semibold tracking-widest text-violet-400 uppercase">Tailored Distributions</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Choose Your Edition</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto mt-3">Whether you need an elegant visual workstation or an ultra-lean headless server, Pulse Linux has you covered.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        
+        <!-- Edition 1: Workstation -->
+        <div class="glass-panel p-8 relative flex flex-col justify-between border-violet-500/50 shadow-xl shadow-violet-950/40">
+          <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-violet-600/30 border border-violet-500/40 text-violet-300 text-xs font-semibold">
+            RECOMMENDED
+          </div>
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-3xl">🖥️</span>
+              <div>
+                <h3 class="text-2xl font-extrabold text-white">Pulse Workstation</h3>
+                <span class="text-xs font-mono text-cyan-400">GNOME Desktop Edition</span>
+              </div>
+            </div>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              The flagship experience. Includes full GNOME desktop environment, 5 pre-installed curated themes, 4K wallpapers, basic productivity apps, and the `pulse-install` guided graphical installer.
+            </p>
+
+            <div class="space-y-3 mb-8 text-xs sm:text-sm text-slate-300 font-mono">
+              <div class="flex items-center justify-between pb-2 border-b border-white/10">
+                <span class="text-slate-400">ISO Size:</span>
+                <span class="font-bold text-white">615.5 MB</span>
+              </div>
+              <div class="flex items-center justify-between pb-2 border-b border-white/10">
+                <span class="text-slate-400">Desktop Environment:</span>
+                <span class="font-bold text-white">GNOME 43.9 (Wayland)</span>
+              </div>
+              <div class="flex items-center justify-between pb-2 border-b border-white/10">
+                <span class="text-slate-400">Memory Usage (Idle):</span>
+                <span class="font-bold text-emerald-400">~680 MB RAM</span>
+              </div>
+              <div class="flex items-center justify-between pb-2 border-b border-white/10">
+                <span class="text-slate-400">Target Audience:</span>
+                <span class="font-bold text-white">Developers, Analysts, Daily Work</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <a href="download.html#workstation" class="btn-cyan w-full mb-3">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              <span>Download Workstation ISO (615 MB)</span>
+            </a>
+            <button type="button" class="copy-btn w-full py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-slate-200 text-xs font-mono flex items-center justify-center gap-2 border border-white/5 transition-all" data-copy="6eb760617c6fc5366f86b86e0383ce5205d8c4b2af95e03ca7168cb7d8f14759" data-label="Workstation SHA256">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+              <span>Copy SHA256 Checksum</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Edition 2: Core Minimal -->
+        <div class="glass-panel p-8 relative flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-3xl">⚙️</span>
+              <div>
+                <h3 class="text-2xl font-extrabold text-white">Pulse Core</h3>
+                <span class="text-xs font-mono text-slate-400">Headless Minimal CLI</span>
+              </div>
+            </div>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              The ultra-lean server and homelab foundation. Contains no graphical desktop, booting directly into a high-speed shell with APT, OpenSSH, and the Pulse command suite.
+            </p>
+
+            <div class="space-y-3 mb-8 text-xs sm:text-sm text-slate-300 font-mono">
+              <div class="flex items-center justify-between pb-2 border-b border-white/10">
+                <span class="text-slate-400">ISO Size:</span>
+                <span class="font-bold text-white">162.7 MB</span>
+              </div>
+              <div class="flex items-center justify-between pb-2 border-b border-white/10">
+                <span class="text-slate-400">Desktop Environment:</span>
+                <span class="font-bold text-slate-400">None (Pure CLI)</span>
+              </div>
+              <div class="flex items-center justify-between pb-2 border-b border-white/10">
+                <span class="text-slate-400">Memory Usage (Idle):</span>
+                <span class="font-bold text-emerald-400">&lt; 120 MB RAM</span>
+              </div>
+              <div class="flex items-center justify-between pb-2 border-b border-white/10">
+                <span class="text-slate-400">Target Audience:</span>
+                <span class="font-bold text-white">Servers, Containers, Homelabs, VMs</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <a href="download.html#core" class="btn-secondary w-full mb-3">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              <span>Download Core ISO (163 MB)</span>
+            </a>
+            <button type="button" class="copy-btn w-full py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-slate-200 text-xs font-mono flex items-center justify-center gap-2 border border-white/5 transition-all" data-copy="9ec454a856f6ef46487e49eb72c686da2cb8a37df8c08fc4c0a525e9ddfd06f9" data-label="Core SHA256">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+              <span>Copy SHA256 Checksum</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       THEMES & WALLPAPERS SHOWCASE
+       ======================================================== -->
+  <section class="py-20 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div>
+          <span class="text-xs font-mono font-semibold tracking-widest text-cyan-400 uppercase">Visual Identity</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-1">5 Crafted Themes. 4K Wallpapers.</h2>
+          <p class="text-slate-400 max-w-xl mt-2">Every wallpaper is an SVG vector asset crafted specifically to inspire focus, productivity, and aesthetics.</p>
+        </div>
+        <div class="mt-4 md:mt-0">
+          <a href="themes.html" class="btn-secondary text-sm">
+            <span>View Full Wallpapers Gallery &rarr;</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Wallpaper 1: Dark -->
+        <div class="wallpaper-card glass-panel group">
+          <div class="overflow-hidden rounded-t-xl">
+            <img src="assets/wallpapers/pulse-dark-4k.svg" alt="Pulse Dark Theme" loading="lazy">
+          </div>
+          <div class="p-4 flex items-center justify-between">
+            <div>
+              <h5 class="font-bold text-white text-sm">Pulse Dark</h5>
+              <span class="text-[11px] text-slate-400 font-mono">Electric Violet &amp; Void Charcoal</span>
+            </div>
+            <a href="assets/wallpapers/pulse-dark-4k.svg" download="pulse-dark-4k.svg" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-cyan-400 transition-colors" title="Download SVG">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Wallpaper 2: Light -->
+        <div class="wallpaper-card glass-panel group">
+          <div class="overflow-hidden rounded-t-xl">
+            <img src="assets/wallpapers/pulse-light-4k.svg" alt="Pulse Light Theme" loading="lazy">
+          </div>
+          <div class="p-4 flex items-center justify-between">
+            <div>
+              <h5 class="font-bold text-white text-sm">Pulse Light</h5>
+              <span class="text-[11px] text-slate-400 font-mono">Crisp Pure Slate &amp; Cyan Sky</span>
+            </div>
+            <a href="assets/wallpapers/pulse-light-4k.svg" download="pulse-light-4k.svg" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-cyan-400 transition-colors" title="Download SVG">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Wallpaper 3: Cyber Neon -->
+        <div class="wallpaper-card glass-panel group">
+          <div class="overflow-hidden rounded-t-xl">
+            <img src="assets/wallpapers/pulse-cyber-neon-4k.svg" alt="Pulse Cyber Neon Theme" loading="lazy">
+          </div>
+          <div class="p-4 flex items-center justify-between">
+            <div>
+              <h5 class="font-bold text-white text-sm">Pulse Cyber Neon</h5>
+              <span class="text-[11px] text-slate-400 font-mono">Synthwave Glow &amp; Matrix Grid</span>
+            </div>
+            <a href="assets/wallpapers/pulse-cyber-neon-4k.svg" download="pulse-cyber-neon-4k.svg" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-cyan-400 transition-colors" title="Download SVG">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Wallpaper 4: Midnight Minimal -->
+        <div class="wallpaper-card glass-panel group">
+          <div class="overflow-hidden rounded-t-xl">
+            <img src="assets/wallpapers/pulse-midnight-minimal-4k.svg" alt="Pulse Midnight Minimal Theme" loading="lazy">
+          </div>
+          <div class="p-4 flex items-center justify-between">
+            <div>
+              <h5 class="font-bold text-white text-sm">Pulse Midnight Minimal</h5>
+              <span class="text-[11px] text-slate-400 font-mono">OLED Deep Pitch Black</span>
+            </div>
+            <a href="assets/wallpapers/pulse-midnight-minimal-4k.svg" download="pulse-midnight-minimal-4k.svg" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-cyan-400 transition-colors" title="Download SVG">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Wallpaper 5: Security Slate -->
+        <div class="wallpaper-card glass-panel group">
+          <div class="overflow-hidden rounded-t-xl">
+            <img src="assets/wallpapers/pulse-security-slate-4k.svg" alt="Pulse Security Slate Theme" loading="lazy">
+          </div>
+          <div class="p-4 flex items-center justify-between">
+            <div>
+              <h5 class="font-bold text-white text-sm">Pulse Security Slate</h5>
+              <span class="text-[11px] text-slate-400 font-mono">Tactical Low-Distraction Carbon</span>
+            </div>
+            <a href="assets/wallpapers/pulse-security-slate-4k.svg" download="pulse-security-slate-4k.svg" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-cyan-400 transition-colors" title="Download SVG">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Terminal Customizer Card -->
+        <div class="glass-panel p-6 flex flex-col justify-between border-violet-500/30">
+          <div>
+            <div class="text-xs font-mono text-cyan-400 mb-2">CLI Instant Switcher</div>
+            <h5 class="font-bold text-white text-base mb-2">Switch Themes from Shell</h5>
+            <p class="text-slate-400 text-xs leading-relaxed mb-4">
+              Apply themes, GTK4 color accents, and wallpaper across all open monitors instantly with the `pulse theme` command.
+            </p>
+          </div>
+          <div class="p-3 rounded-lg bg-black/60 border border-white/10 font-mono text-xs text-slate-300">
+            $ pulse theme set cyber-neon
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       DOWNLOAD CENTER SECTION
+       ======================================================== -->
+  <section id="download" class="py-20 bg-slate-950/70 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-16">
+        <span class="text-xs font-mono font-semibold tracking-widest text-cyan-400 uppercase">Download Center</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Get Pulse Linux 1.0 (Vanguard)</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto mt-3">Free and open source. Direct download links and verified SHA256 checksums.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
+        
+        <!-- Workstation ISO Card -->
+        <div class="glass-panel p-8 flex flex-col justify-between border-violet-500/50 shadow-xl">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-violet-600/30 text-violet-300 border border-violet-500/40 font-semibold">x86_64 AMD64</span>
+              <span class="text-xs text-slate-400 font-mono">615.5 MB</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-1">Pulse Workstation ISO</h3>
+            <p class="text-xs text-slate-400 mb-4">Full GNOME 43 desktop, 5 themes, Nautilus, Gedit, Terminal, and installer.</p>
+            
+            <!-- Checksum Box -->
+            <div class="p-3 rounded-lg bg-black/50 border border-white/10 mb-6">
+              <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-1">
+                <span>SHA256 CHECKSUM</span>
+                <button type="button" class="copy-btn text-cyan-400 hover:underline flex items-center gap-1" data-copy="6eb760617c6fc5366f86b86e0383ce5205d8c4b2af95e03ca7168cb7d8f14759" data-label="Workstation SHA256">
+                  Copy
+                </button>
+              </div>
+              <div class="font-mono text-[10px] text-slate-300 break-all select-all">
+                6eb760617c6fc5366f86b86e0383ce5205d8c4b2af95e03ca7168cb7d8f14759
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <a href="https://github.com/Pulse-Linux/pulse/releases/download/v1.0.0-vanguard/pulse-linux-1.0-gnome-amd64.iso" class="btn-cyan w-full text-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              <span>Download Workstation ISO</span>
+            </a>
+            <div class="text-center">
+              <a href="https://github.com/Pulse-Linux/pulse/releases/tag/v1.0.0-vanguard" target="_blank" rel="noopener noreferrer" class="text-xs text-slate-400 hover:text-white underline">
+                View Release on GitHub &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Core ISO Card -->
+        <div class="glass-panel p-8 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-white/10 text-slate-300 border border-white/20 font-semibold">x86_64 AMD64</span>
+              <span class="text-xs text-slate-400 font-mono">162.7 MB</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-1">Pulse Core ISO</h3>
+            <p class="text-xs text-slate-400 mb-4">Minimal headless CLI base for servers, virtualization, containers, and appliances.</p>
+            
+            <!-- Checksum Box -->
+            <div class="p-3 rounded-lg bg-black/50 border border-white/10 mb-6">
+              <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-1">
+                <span>SHA256 CHECKSUM</span>
+                <button type="button" class="copy-btn text-cyan-400 hover:underline flex items-center gap-1" data-copy="9ec454a856f6ef46487e49eb72c686da2cb8a37df8c08fc4c0a525e9ddfd06f9" data-label="Core SHA256">
+                  Copy
+                </button>
+              </div>
+              <div class="font-mono text-[10px] text-slate-300 break-all select-all">
+                9ec454a856f6ef46487e49eb72c686da2cb8a37df8c08fc4c0a525e9ddfd06f9
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <a href="https://github.com/Pulse-Linux/pulse/releases/download/v1.0.0-vanguard/pulse-linux-core-amd64.iso" class="btn-secondary w-full text-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              <span>Download Core ISO</span>
+            </a>
+            <div class="text-center">
+              <a href="https://github.com/Pulse-Linux/pulse/releases/tag/v1.0.0-vanguard" target="_blank" rel="noopener noreferrer" class="text-xs text-slate-400 hover:text-white underline">
+                View Release on GitHub &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Verification Guide Accordion -->
+      <div class="max-w-3xl mx-auto p-6 rounded-xl bg-slate-900 border border-white/10">
+        <h4 class="font-bold text-white text-sm mb-2 flex items-center gap-2">
+          <span>🔒</span> How to Verify Your Download Integrity
+        </h4>
+        <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+          Open a terminal in your download folder and verify that the cryptographic checksum matches:
+        </p>
+        <div class="p-3 rounded-lg bg-black font-mono text-xs text-emerald-400 flex items-center justify-between">
+          <code>sha256sum -c &lt;(echo "6eb760617c6fc5366f86b86e0383ce5205d8c4b2af95e03ca7168cb7d8f14759  pulse-linux-1.0-gnome-amd64.iso")</code>
+          <button type="button" class="copy-btn text-slate-400 hover:text-white" data-copy='sha256sum -c &lt;(echo "6eb760617c6fc5366f86b86e0383ce5205d8c4b2af95e03ca7168cb7d8f14759  pulse-linux-1.0-gnome-amd64.iso")' data-label="verification command">Copy</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       INSTALLATION & HARDWARE GUIDE
+       ======================================================== -->
+  <section class="py-20 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-16">
+        <span class="text-xs font-mono font-semibold tracking-widest text-violet-400 uppercase">Setup &amp; Deployment</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Installation &amp; Hardware Guide</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto mt-3">Deploy Pulse Linux on bare-metal hardware or test it immediately in your favorite virtual machine.</p>
+      </div>
+
+      <!-- Tabbed Installation Container (Modern Web Guidance Compliant) -->
+      <div data-tabs-container class="max-w-4xl mx-auto glass-panel p-6 sm:p-8">
+        
+        <!-- Tab buttons -->
+        <div focusgroup="tablist nomemory" class="flex items-center gap-2 border-b border-white/10 pb-4 mb-6 overflow-x-auto" aria-label="Installation methods">
+          <button type="button" role="tab" id="tab-usb" aria-controls="panel-usb" aria-selected="true" focusgroupstart class="tab-btn">
+            💾 USB Flash Drive (Bare Metal)
+          </button>
+          <button type="button" role="tab" id="tab-qemu" aria-controls="panel-qemu" aria-selected="false" class="tab-btn">
+            ⚡ QEMU / KVM Virtual Machine
+          </button>
+          <button type="button" role="tab" id="tab-specs" aria-controls="panel-specs" aria-selected="false" class="tab-btn">
+            📋 Hardware Requirements
+          </button>
+        </div>
+
+        <!-- Panel 1: USB Flashing -->
+        <div role="tabpanel" id="panel-usb" aria-labelledby="tab-usb" tabindex="0" class="space-y-4">
+          <h4 class="font-bold text-white text-base">Creating a Bootable Pulse Linux USB Drive</h4>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Write the downloaded ISO image to any USB drive (minimum 2 GB). You can use graphical utilities or the command line:
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 my-4">
+            <div class="p-4 rounded-xl bg-slate-900 border border-white/10">
+              <div class="font-bold text-white text-xs mb-1">BalenaEtcher</div>
+              <p class="text-[11px] text-slate-400">Cross-platform (Linux, Windows, macOS). Select the ISO, pick your USB stick, and click Flash.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900 border border-white/10">
+              <div class="font-bold text-white text-xs mb-1">Rufus (Windows)</div>
+              <p class="text-[11px] text-slate-400">Select target USB and write in <strong>DD Image mode</strong> for exact byte matching.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900 border border-white/10">
+              <div class="font-bold text-white text-xs mb-1">Command Line (dd)</div>
+              <p class="text-[11px] text-slate-400 font-mono text-[10px]">sudo dd if=pulse.iso of=/dev/sdX bs=4M status=progress</p>
+            </div>
+          </div>
+          <div class="p-4 rounded-xl bg-amber-950/30 border border-amber-500/30 text-amber-300 text-xs flex items-start gap-2">
+            <span>⚠️</span>
+            <span>Always verify the target disk name (`lsblk`) before running `dd` to avoid overwriting existing data.</span>
+          </div>
+        </div>
+
+        <!-- Panel 2: QEMU / KVM -->
+        <div role="tabpanel" id="panel-qemu" aria-labelledby="tab-qemu" hidden="until-found" class="space-y-4">
+          <h4 class="font-bold text-white text-base">Running in QEMU / KVM Virtual Machine</h4>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Test Pulse Linux inside Linux with near-native virtualization speed using QEMU:
+          </p>
+          <div class="p-4 rounded-xl bg-black border border-white/10 font-mono text-xs text-slate-200 space-y-2">
+            <div class="text-slate-400"># 1. Create a 15GB virtual disk:</div>
+            <div class="text-cyan-400">qemu-img create -f qcow2 pulse-disk.qcow2 15G</div>
+            <div class="text-slate-400 pt-2"># 2. Boot Pulse Linux Workstation ISO with 4GB RAM &amp; 2 CPU cores:</div>
+            <div class="text-emerald-400">qemu-system-x86_64 -m 4096 -smp 2 -enable-kvm -cdrom pulse-linux-1.0-gnome-amd64.iso -hda pulse-disk.qcow2 -boot d</div>
+          </div>
+          <p class="text-xs text-slate-400">
+            For VirtualBox or VMware: select Type <strong>Linux</strong>, Version <strong>Debian (64-bit)</strong>, allocate 4096 MB RAM, and attach the ISO to the virtual optical drive.
+          </p>
+        </div>
+
+        <!-- Panel 3: Hardware Specifications -->
+        <div role="tabpanel" id="panel-specs" aria-labelledby="tab-specs" hidden="until-found" class="space-y-4">
+          <h4 class="font-bold text-white text-base">System Requirements</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+            <div class="p-4 rounded-xl bg-slate-900 border border-white/10">
+              <h5 class="font-bold text-cyan-400 text-sm mb-3">Minimum Specifications</h5>
+              <ul class="text-xs text-slate-300 space-y-2 font-mono">
+                <li>• 64-bit x86_64 Dual-Core CPU @ 2.0 GHz</li>
+                <li>• 2 GB RAM (Workstation) / 512 MB (Core)</li>
+                <li>• 10 GB Available Storage</li>
+                <li>• 1024x768 Display Resolution</li>
+              </ul>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900 border border-violet-500/40">
+              <h5 class="font-bold text-violet-400 text-sm mb-3">Recommended Specifications</h5>
+              <ul class="text-xs text-slate-300 space-y-2 font-mono">
+                <li>• Quad-Core 64-bit Processor or better</li>
+                <li>• 4 GB to 8 GB+ High-Speed RAM</li>
+                <li>• 25 GB+ Fast NVMe / SSD Storage</li>
+                <li>• 1920x1080 (FHD) or 4K with 3D Graphics Acceleration</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       OPEN SOURCE ORGANIZATION & COMMUNITY
+       ======================================================== -->
+  <section class="py-20 bg-slate-950/80 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-600/20 border border-violet-500/30 text-violet-300 text-xs font-mono mb-4">
+        <span>🌐 Global Open Source Organization</span>
+      </div>
+
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Join the Pulse Linux Community</h2>
+      <p class="text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed">
+        Pulse Linux is maintained as an open-source initiative under the Pulse Linux GitHub Organization. We welcome contributors, bug hunters, package maintainers, and designers.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="https://github.com/Pulse-Linux" target="_blank" rel="noopener noreferrer" class="btn-primary">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          <span>GitHub Organization: @Pulse-Linux</span>
+        </a>
+        <a href="https://github.com/Pulse-Linux/pulse/issues" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+          <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          <span>Report an Issue / Bug</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       FOOTER
+       ======================================================== -->
+  <footer class="border-t border-white/10 bg-slate-950 py-12 text-sm text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        
+        <!-- Col 1: Brand Info -->
+        <div class="space-y-4">
+          <div class="flex items-center gap-2">
+            <img src="assets/images/pulse-logo.svg" alt="Pulse Linux" class="w-6 h-6">
+            <span class="font-extrabold text-white text-lg tracking-tight">PULSE LINUX</span>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            One Operating System. Two Worlds. Unlimited Possibilities. The unified developer workstation and modular security platform.
+          </p>
+          <div class="text-xs text-slate-500 font-mono">
+            Support: <a href="mailto:support@pulselinux.org" class="text-cyan-400 hover:underline">support@pulselinux.org</a>
+          </div>
+        </div>
+
+        <!-- Col 2: Navigation -->
+        <div>
+          <h6 class="font-bold text-white text-xs uppercase font-mono tracking-wider mb-3">Project</h6>
+          <ul class="space-y-2 text-xs">
+            <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
+            <li><a href="#features" class="hover:text-white transition-colors">Features &amp; Apps</a></li>
+            <li><a href="#architecture" class="hover:text-white transition-colors">Architecture</a></li>
+            <li><a href="#editions" class="hover:text-white transition-colors">Editions Comparison</a></li>
+            <li><a href="themes.html" class="hover:text-white transition-colors">Themes &amp; Wallpapers</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Downloads & Docs -->
+        <div>
+          <h6 class="font-bold text-white text-xs uppercase font-mono tracking-wider mb-3">Resources</h6>
+          <ul class="space-y-2 text-xs">
+            <li><a href="download.html" class="hover:text-white transition-colors">Download Workstation ISO</a></li>
+            <li><a href="download.html#core" class="hover:text-white transition-colors">Download Core ISO</a></li>
+            <li><a href="docs.html" class="hover:text-white transition-colors">Getting Started Guide</a></li>
+            <li><a href="docs.html#cli" class="hover:text-white transition-colors">Pulse CLI Command Reference</a></li>
+            <li><a href="docs.html#security" class="hover:text-white transition-colors">Security Sandbox Guide</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Legal & Community -->
+        <div>
+          <h6 class="font-bold text-white text-xs uppercase font-mono tracking-wider mb-3">Community &amp; Legal</h6>
+          <ul class="space-y-2 text-xs">
+            <li><a href="https://github.com/Pulse-Linux" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub Organization</a></li>
+            <li><a href="https://github.com/Pulse-Linux/pulse" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">OS Repository</a></li>
+            <li><a href="https://github.com/Pulse-Linux/.github/blob/main/CODE_OF_CONDUCT.md" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Code of Conduct</a></li>
+            <li><a href="https://github.com/Pulse-Linux/.github/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Contributing</a></li>
+            <li><a href="https://github.com/Pulse-Linux/.github/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Security Policy</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Bottom Notice -->
+      <div class="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+        <div>
+          Copyright &copy; 2026 Pulse Linux Project. All rights reserved. Released under GPLv3 and MIT licenses.
+        </div>
+        <div class="text-[11px] text-slate-500">
+          Debian is a registered trademark of SPI Inc. Kali Linux is a trademark of OffSec.
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Main JavaScript File -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
