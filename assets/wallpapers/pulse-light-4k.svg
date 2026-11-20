@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3840 2160" width="3840" height="2160">
+  <defs>
+    <linearGradient id="lightBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="50%" stop-color="#f1f5f9"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <linearGradient id="lightAccentViolet" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7852ff" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#6366f1" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#4f46e5" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="lightAccentBlue" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#0ea5e9" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="3840" height="2160" fill="url(#lightBg)"/>
+
+  <!-- Subtle Engineering Grid -->
+  <g opacity="0.06" stroke="#0f172a" stroke-width="1">
+    <path d="M 0,540 L 3840,540 M 0,1080 L 3840,1080 M 0,1620 L 3840,1620"/>
+    <path d="M 960,0 L 960,2160 M 1920,0 L 1920,2160 M 2880,0 L 2880,2160"/>
+  </g>
+
+  <!-- Primary Wave -->
+  <path d="M 0,1080 L 1100,1080 L 1350,1450 L 1600,450 L 1920,1750 L 2240,650 L 2490,1080 L 3840,1080"
+        fill="none"
+        stroke="url(#lightAccentBlue)"
+        stroke-width="10"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- Secondary Wave -->
+  <path d="M 0,1080 L 1200,1080 L 1450,1300 L 1700,700 L 1920,1500 L 2140,850 L 2390,1080 L 3840,1080"
+        fill="none"
+        stroke="url(#lightAccentViolet)"
+        stroke-width="6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        opacity="0.8"/>
+
+  <!-- Pulse Rings -->
+  <circle cx="1920" cy="1080" r="380" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="16 12"/>
+  <circle cx="1920" cy="1080" r="280" fill="none" stroke="#7852ff" stroke-width="2" stroke-opacity="0.3"/>
+
+  <!-- Typography -->
+  <text x="1920" y="1180" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="54" font-weight="700" fill="#0f172a" letter-spacing="18" text-anchor="middle" opacity="0.9">PULSE LINUX</text>
+  <text x="1920" y="1230" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="500" fill="#6366f1" letter-spacing="8" text-anchor="middle" opacity="0.8">DEVELOPER &amp; SECURITY WORKSTATION</text>
+</svg>

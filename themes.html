@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Themes & 4K Wallpapers | Pulse Linux</title>
+  <meta name="description" content="Explore and download the official 5 themes and 4K vector wallpapers designed for Pulse Linux 1.0 (Vanguard).">
+  
+  <meta name="color-scheme" content="light dark">
+  <script>
+    document.querySelector('meta[name="color-scheme"]').content = localStorage.getItem("color-scheme") ?? "light dark";
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="assets/images/pulse-logo.svg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            pulse: {
+              violet: '#7852FF',
+              cyan: '#00D2FF',
+              neon: '#00FFCC',
+              dark: '#060812',
+              surface: '#0F1322',
+              card: 'rgba(19, 24, 46, 0.7)'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="selection:bg-violet-600 selection:text-white">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl bg-slate-950/75 border-b border-white/10 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group text-decoration-none">
+        <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-violet-600/30 to-cyan-500/30 border border-violet-500/40 group-hover:border-cyan-400 transition-all">
+          <img src="assets/images/pulse-logo.svg" alt="Pulse Linux Logo" class="w-7 h-7 drop-shadow-md">
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-xl tracking-tight text-white group-hover:text-cyan-300 transition-colors">PULSE</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-violet-600/30 text-violet-300 border border-violet-500/30 font-mono">THEMES</span>
+          </div>
+          <span class="text-[10px] text-slate-400 font-mono tracking-wider -mt-1 uppercase">Visual Collection</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-300">
+        <a href="index.html#features" class="hover:text-cyan-300 transition-colors">Features</a>
+        <a href="index.html#architecture" class="hover:text-cyan-300 transition-colors">Architecture</a>
+        <a href="index.html#editions" class="hover:text-cyan-300 transition-colors">Editions</a>
+        <a href="themes.html" class="text-cyan-400 font-semibold transition-colors">Themes & 4K</a>
+        <a href="docs.html" class="hover:text-cyan-300 transition-colors">Documentation</a>
+        <a href="download.html" class="hover:text-cyan-300 transition-colors">Downloads</a>
+      </nav>
+
+      <div class="hidden md:flex items-center gap-4">
+        <button id="theme-toggle-btn" type="button" class="p-2 rounded-xl bg-white/5 border border-white/10 hover:border-violet-500/50 text-slate-300 hover:text-white transition-all" aria-label="Toggle theme"></button>
+        <a href="download.html" class="btn-cyan text-xs !py-2 !px-4">
+          <span>Get ISO (615 MB)</span>
+        </a>
+      </div>
+
+      <button id="mobile-menu-toggle" type="button" class="md:hidden p-2 rounded-xl bg-white/5 border border-white/10 text-slate-300" aria-expanded="false" aria-label="Toggle navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+
+    <div id="mobile-nav" class="closed md:hidden px-4 pt-3 pb-6 border-b border-white/10 bg-slate-950/95 space-y-3">
+      <a href="index.html" class="block py-2 text-slate-300 hover:text-white">Home</a>
+      <a href="index.html#features" class="block py-2 text-slate-300 hover:text-white">Features</a>
+      <a href="themes.html" class="block py-2 text-cyan-400 font-semibold">Themes & 4K</a>
+      <a href="docs.html" class="block py-2 text-slate-300 hover:text-white">Documentation</a>
+      <a href="download.html" class="block py-2 text-slate-300 hover:text-white">Downloads</a>
+    </div>
+  </header>
+
+  <!-- Page Title -->
+  <section class="py-16 text-center border-b border-white/10 bg-slate-950/40">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-600/20 border border-violet-500/30 text-violet-300 text-xs font-mono mb-4">
+        <span>OFFICIAL PULSE DESIGN SYSTEM</span>
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-white mb-4">Pulse Linux Visual Themes & 4K Wallpapers</h1>
+      <p class="text-slate-300 text-lg max-w-2xl mx-auto">
+        Designed from first principles to balance ergonomic developer clarity and high-aesthetic cyberpunk presence. All vector wallpapers are scalable to 8K without loss of quality.
+      </p>
+    </div>
+  </section>
+
+  <!-- Themes Showcase -->
+  <section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+      
+      <!-- Theme 1: Pulse Dark -->
+      <div class="glass-panel p-6 sm:p-8 border-violet-500/40 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-violet-600"></span>
+              <h2 class="text-2xl font-bold text-white">1. Pulse Dark (Flagship Default)</h2>
+            </div>
+            <p class="text-slate-400 text-xs sm:text-sm mt-1">Deep Void Charcoal backdrop with Electric Violet and Cyber Cyan glowing circuit traces.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <a href="assets/wallpapers/pulse-dark-4k.svg" download="pulse-dark-4k.svg" class="btn-cyan text-xs !py-2 !px-4">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              <span>Download 4K SVG</span>
+            </a>
+            <button type="button" class="copy-btn btn-secondary text-xs !py-2 !px-3 font-mono" data-copy="pulse theme set pulse-dark" data-label="CLI command">
+              CLI Set
+            </button>
+          </div>
+        </div>
+
+        <div class="rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+          <img src="assets/wallpapers/pulse-dark-4k.svg" alt="Pulse Dark 4K Wallpaper" class="w-full aspect-[16/9] object-cover">
+        </div>
+
+        <!-- Color Palette Swatches -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+          <div class="p-3 rounded-lg bg-[#060812] border border-white/10 flex items-center justify-between">
+            <span class="text-slate-400">Void Dark</span>
+            <span class="text-white font-bold select-all">#060812</span>
+          </div>
+          <div class="p-3 rounded-lg bg-[#7852FF] text-white flex items-center justify-between">
+            <span>Electric Violet</span>
+            <span class="font-bold select-all">#7852FF</span>
+          </div>
+          <div class="p-3 rounded-lg bg-[#00D2FF] text-slate-950 flex items-center justify-between">
+            <span class="font-bold">Pulse Blue</span>
+            <span class="font-bold select-all">#00D2FF</span>
+          </div>
+          <div class="p-3 rounded-lg bg-[#0F1322] border border-white/10 flex items-center justify-between">
+            <span class="text-slate-400">Surface</span>
+            <span class="text-white font-bold select-all">#0F1322</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme 2: Pulse Light -->
+      <div class="glass-panel p-6 sm:p-8 border-sky-400/30 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-sky-400"></span>
+              <h2 class="text-2xl font-bold text-white">2. Pulse Light (High Contrast Clarity)</h2>
+            </div>
+            <p class="text-slate-400 text-xs sm:text-sm mt-1">Crisp pure slate background paired with luminous cyan gradients, optimized for bright rooms and daytime writing.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <a href="assets/wallpapers/pulse-light-4k.svg" download="pulse-light-4k.svg" class="btn-cyan text-xs !py-2 !px-4">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              <span>Download 4K SVG</span>
+            </a>
+            <button type="button" class="copy-btn btn-secondary text-xs !py-2 !px-3 font-mono" data-copy="pulse theme set pulse-light" data-label="CLI command">
+              CLI Set
+            </button>
+          </div>
+        </div>
+
+        <div class="rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+          <img src="assets/wallpapers/pulse-light-4k.svg" alt="Pulse Light 4K Wallpaper" class="w-full aspect-[16/9] object-cover">
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+          <div class="p-3 rounded-lg bg-[#F8FAFC] text-slate-900 border border-slate-300 flex items-center justify-between">
+            <span class="font-bold">Pure Slate</span>
+            <span class="font-bold select-all">#F8FAFC</span>
+          </div>
+          <div class="p-3 rounded-lg bg-[#00D2FF] text-slate-950 flex items-center justify-between">
+            <span class="font-bold">Cyan Sky</span>
+            <span class="font-bold select-all">#00D2FF</span>
+          </div>
+          <div class="p-3 rounded-lg bg-[#7852FF] text-white flex items-center justify-between">
+            <span>Violet Accent</span>
+            <span class="font-bold select-all">#7852FF</span>
+          </div>
+          <div class="p-3 rounded-lg bg-[#0F172A] text-white border border-white/10 flex items-center justify-between">
+            <span>Dark Navy</span>
+            <span class="font-bold select-all">#0F172A</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme 3: Pulse Cyber Neon -->
+      <div class="glass-panel p-6 sm:p-8 border-pink-500/40 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-pink-500"></span>
+              <h2 class="text-2xl font-bold text-white">3. Pulse Cyber Neon (Synthwave Hacker)</h2>
+            </div>
+            <p class="text-slate-400 text-xs sm:text-sm mt-1">Retro-futuristic perspective grid bathed in radiant neon magenta, electric cyan, and deep ultraviolet glows.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <a href="assets/wallpapers/pulse-cyber-neon-4k.svg" download="pulse-cyber-neon-4k.svg" class="btn-cyan text-xs !py-2 !px-4">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              <span>Download 4K SVG</span>
+            </a>
+            <button type="button" class="copy-btn btn-secondary text-xs !py-2 !px-3 font-mono" data-copy="pulse theme set pulse-cyber-neon" data-label="CLI command">
+              CLI Set
+            </button>
+          </div>
+        </div>
+
+        <div class="rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+          <img src="assets/wallpapers/pulse-cyber-neon-4k.svg" alt="Pulse Cyber Neon 4K Wallpaper" class="w-full aspect-[16/9] object-cover">
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+          <div class="p-3 rounded-lg bg-[#FF007F] text-white flex items-center justify-between">
+            <span class="font-bold">Neon Pink</span>
+            <span class="font-bold select-all">#FF007F</span>
+          </div>
+          <div class="p-3 rounded-lg bg-[#00FFCC] text-slate-950 flex items-center justify-between">
+            <span class="font-bold">Matrix Cyan</span>
+            <span class="font-bold select-all">#00FFCC</span>
+          </div>
+          <div class="p-3 rounded-lg bg-[#7852FF] text-white flex items-center justify-between">
+            <span>Cyber Violet</span>
+            <span class="font-bold select-all">#7852FF</span>
+          </div>
+          <div class="p-3 rounded-lg bg-[#0A0D1E] text-slate-200 border border-white/10 flex items-center justify-between">
+            <span>Deep Indigo</span>
+            <span class="font-bold select-all">#0A0D1E</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme 4: Pulse Midnight Minimal -->
+      <div class="glass-panel p-6 sm:p-8 border-neutral-700/50 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-neutral-900 border border-slate-500"></span>
+              <h2 class="text-2xl font-bold text-white">4. Pulse Midnight Minimal (OLED Black)</h2>
+            </div>
+            <p class="text-slate-400 text-xs sm:text-sm mt-1">Pitch black 0% RGB emission background for OLED displays, saving battery and eliminating eye fatigue.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <a href="assets/wallpapers/pulse-midnight-minimal-4k.svg" download="pulse-midnight-minimal-4k.svg" class="btn-cyan text-xs !py-2 !px-4">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              <span>Download 4K SVG</span>
+            </a>
+            <button type="button" class="copy-btn btn-secondary text-xs !py-2 !px-3 font-mono" data-copy="pulse theme set pulse-midnight" data-label="CLI command">
+              CLI Set
+            </button>
+          </div>
+        </div>
+
+        <div class="rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+          <img src="assets/wallpapers/pulse-midnight-minimal-4k.svg" alt="Pulse Midnight Minimal 4K Wallpaper" class="w-full aspect-[16/9] object-cover">
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+          <div class="p-3 rounded-lg bg-[#000000] text-white border border-neutral-800 flex items-center justify-between">
+            <span class="font-bold">OLED Black</span>
+            <span class="font-bold select-all">#000000</span>
+          </div>
+          <div class="p-3 rounded-lg bg-[#141414] text-slate-300 border border-neutral-800 flex items-center justify-between">
+            <span>Charcoal</span>
+            <span class="font-bold select-all">#141414</span>
+          </div>
+          <div class="p-3 rounded-lg bg-[#7852FF] text-white flex items-center justify-between">
+            <span>Violet Subtle</span>
+            <span class="font-bold select-all">#7852FF</span>
+          </div>
+          <div class="p-3 rounded-lg bg-[#FFFFFF] text-black font-bold flex items-center justify-between">
+            <span>Pure White</span>
+            <span class="font-bold select-all">#FFFFFF</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme 5: Pulse Security Slate -->
+      <div class="glass-panel p-6 sm:p-8 border-slate-600/50 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-slate-500"></span>
+              <h2 class="text-2xl font-bold text-white">5. Pulse Security Slate (Tactical Low-Distraction)</h2>
+            </div>
+            <p class="text-slate-400 text-xs sm:text-sm mt-1">Tactical dark gunmetal gray designed for multi-hour security auditing, network monitoring, and hex inspection.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <a href="assets/wallpapers/pulse-security-slate-4k.svg" download="pulse-security-slate-4k.svg" class="btn-cyan text-xs !py-2 !px-4">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              <span>Download 4K SVG</span>
+            </a>
+            <button type="button" class="copy-btn btn-secondary text-xs !py-2 !px-3 font-mono" data-copy="pulse theme set pulse-security-slate" data-label="CLI command">
+              CLI Set
+            </button>
+          </div>
+        </div>
+
+        <div class="rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+          <img src="assets/wallpapers/pulse-security-slate-4k.svg" alt="Pulse Security Slate 4K Wallpaper" class="w-full aspect-[16/9] object-cover">
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+          <div class="p-3 rounded-lg bg-[#1E2430] text-white border border-slate-700 flex items-center justify-between">
+            <span class="font-bold">Gunmetal Slate</span>
+            <span class="font-bold select-all">#1E2430</span>
+          </div>
+          <div class="p-3 rounded-lg bg-[#38BDF8] text-slate-950 flex items-center justify-between">
+            <span class="font-bold">Sky Blue</span>
+            <span class="font-bold select-all">#38BDF8</span>
+          </div>
+          <div class="p-3 rounded-lg bg-[#10B981] text-slate-950 flex items-center justify-between">
+            <span class="font-bold">Tactical Green</span>
+            <span class="font-bold select-all">#10B981</span>
+          </div>
+          <div class="p-3 rounded-lg bg-[#0E121B] text-slate-300 border border-slate-800 flex items-center justify-between">
+            <span>Deep Carbon</span>
+            <span class="font-bold select-all">#0E121B</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10 bg-slate-950 py-10 text-xs text-slate-400 text-center">
+    <div class="max-w-7xl mx-auto px-4">
+      <p>Pulse Linux Themes &amp; Design Assets. Released under CC BY-SA 4.0 &amp; MIT licenses.</p>
+      <p class="mt-2 text-slate-500">Copyright &copy; 2026 Pulse Linux Project. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

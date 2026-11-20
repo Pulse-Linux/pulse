@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentation | Pulse Linux 1.0 (Vanguard)</title>
+  <meta name="description" content="Complete documentation for Pulse Linux 1.0. Learn how to install, configure, manage themes, run the pulse CLI suite, and sandbox cybersecurity tools.">
+  
+  <meta name="color-scheme" content="light dark">
+  <script>
+    document.querySelector('meta[name="color-scheme"]').content = localStorage.getItem("color-scheme") ?? "light dark";
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="assets/images/pulse-logo.svg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            pulse: {
+              violet: '#7852FF',
+              cyan: '#00D2FF',
+              neon: '#00FFCC',
+              dark: '#060812',
+              surface: '#0F1322',
+              card: 'rgba(19, 24, 46, 0.7)'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="selection:bg-violet-600 selection:text-white">
+
+  <!-- Navigation Bar -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl bg-slate-950/75 border-b border-white/10 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group text-decoration-none">
+        <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-violet-600/30 to-cyan-500/30 border border-violet-500/40 group-hover:border-cyan-400 transition-all">
+          <img src="assets/images/pulse-logo.svg" alt="Pulse Linux Logo" class="w-7 h-7 drop-shadow-md">
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-xl tracking-tight text-white group-hover:text-cyan-300 transition-colors">PULSE</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-violet-600/30 text-violet-300 border border-violet-500/30 font-mono">DOCS</span>
+          </div>
+          <span class="text-[10px] text-slate-400 font-mono tracking-wider -mt-1 uppercase">v1.0 Vanguard</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-300">
+        <a href="index.html#features" class="hover:text-cyan-300 transition-colors">Features</a>
+        <a href="index.html#architecture" class="hover:text-cyan-300 transition-colors">Architecture</a>
+        <a href="themes.html" class="hover:text-cyan-300 transition-colors">Themes & 4K</a>
+        <a href="docs.html" class="text-cyan-400 font-semibold transition-colors">Documentation</a>
+        <a href="download.html" class="hover:text-cyan-300 transition-colors">Downloads</a>
+      </nav>
+
+      <div class="hidden md:flex items-center gap-4">
+        <button id="theme-toggle-btn" type="button" class="p-2 rounded-xl bg-white/5 border border-white/10 hover:border-violet-500/50 text-slate-300 hover:text-white transition-all" aria-label="Toggle theme"></button>
+        <a href="https://github.com/Pulse-Linux/pulse" target="_blank" rel="noopener noreferrer" class="btn-cyan text-xs !py-2 !px-4">
+          <span>GitHub Repo</span>
+        </a>
+      </div>
+
+      <button id="mobile-menu-toggle" type="button" class="md:hidden p-2 rounded-xl bg-white/5 border border-white/10 text-slate-300" aria-expanded="false" aria-label="Toggle navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+
+    <div id="mobile-nav" class="closed md:hidden px-4 pt-3 pb-6 border-b border-white/10 bg-slate-950/95 space-y-3">
+      <a href="index.html" class="block py-2 text-slate-300 hover:text-white">Home</a>
+      <a href="themes.html" class="block py-2 text-slate-300 hover:text-white">Themes & 4K</a>
+      <a href="docs.html" class="block py-2 text-cyan-400 font-semibold">Documentation</a>
+      <a href="download.html" class="block py-2 text-slate-300 hover:text-white">Downloads</a>
+    </div>
+  </header>
+
+  <!-- Docs Layout Container -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-10">
+      
+      <!-- Sticky Sidebar Navigation -->
+      <aside class="lg:col-span-1">
+        <div class="sticky top-28 p-5 rounded-2xl bg-slate-950/70 border border-white/10 space-y-6">
+          <div>
+            <h6 class="font-bold text-white text-xs uppercase font-mono tracking-wider mb-2 text-cyan-400">Quick Navigation</h6>
+            <ul class="space-y-1 text-xs text-slate-300">
+              <li><a href="#getting-started" class="block py-1.5 hover:text-white hover:translate-x-1 transition-all">🚀 Getting Started</a></li>
+              <li><a href="#credentials" class="block py-1.5 hover:text-white hover:translate-x-1 transition-all">🔑 Default Credentials</a></li>
+              <li><a href="#installation" class="block py-1.5 hover:text-white hover:translate-x-1 transition-all">💿 Guided Installer (pulse-install)</a></li>
+              <li><a href="#pulse-cli" class="block py-1.5 hover:text-white hover:translate-x-1 transition-all">⚡ Pulse CLI Suite</a></li>
+              <li><a href="#theme-engine" class="block py-1.5 hover:text-white hover:translate-x-1 transition-all">🎨 Theme Engine</a></li>
+              <li><a href="#developer-setup" class="block py-1.5 hover:text-white hover:translate-x-1 transition-all">💻 Developer Toolchains</a></li>
+              <li><a href="#security-sandbox" class="block py-1.5 hover:text-white hover:translate-x-1 transition-all">🛡️ Kali Security Sandboxing</a></li>
+            </ul>
+          </div>
+
+          <div class="pt-4 border-t border-white/10">
+            <span class="text-[11px] text-slate-400 block mb-2 font-mono">Need Help?</span>
+            <a href="https://github.com/Pulse-Linux/pulse/issues" target="_blank" rel="noopener noreferrer" class="text-xs text-violet-400 hover:underline flex items-center gap-1">
+              Ask in GitHub Issues &rarr;
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Docs Content -->
+      <main class="lg:col-span-3 space-y-16">
+        
+        <!-- Section: Getting Started -->
+        <section id="getting-started" class="space-y-4">
+          <div class="flex items-center gap-2 text-xs font-mono text-cyan-400">
+            <span>CHAPTER 01</span>
+          </div>
+          <h2 class="text-3xl font-extrabold text-white">Getting Started with Pulse Linux</h2>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Pulse Linux is distributed as a hybrid Live/Install ISO. When booted from a USB drive or virtual machine, it boots into a fully functional live environment without altering your local hard disks.
+          </p>
+
+          <div class="p-4 rounded-xl bg-slate-900 border border-white/10 text-xs text-slate-300 space-y-2">
+            <p><strong>Workstation Edition:</strong> Automatically starts the GNOME 43 graphical desktop environment with complete display auto-detection.</p>
+            <p><strong>Core Edition:</strong> Boots into a high-speed CLI shell with full networking tools (`nmtui`, `ip`, `ssh`).</p>
+          </div>
+        </section>
+
+        <!-- Section: Credentials -->
+        <section id="credentials" class="space-y-4 pt-6 border-t border-white/10">
+          <div class="flex items-center gap-2 text-xs font-mono text-violet-400">
+            <span>CHAPTER 02</span>
+          </div>
+          <h2 class="text-3xl font-extrabold text-white">Default System Credentials</h2>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Both the live session and pre-installation environments ship with standard configured users:
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="p-5 rounded-xl bg-slate-900 border border-cyan-500/30">
+              <div class="text-xs font-mono text-cyan-400 mb-1">Standard User (Sudo Enabled)</div>
+              <div class="font-mono text-sm text-white">Username: <span class="text-cyan-300 font-bold">pulse</span></div>
+              <div class="font-mono text-sm text-white">Password: <span class="text-cyan-300 font-bold">pulse</span></div>
+            </div>
+            <div class="p-5 rounded-xl bg-slate-900 border border-violet-500/30">
+              <div class="text-xs font-mono text-violet-400 mb-1">Root Superuser</div>
+              <div class="font-mono text-sm text-white">Username: <span class="text-violet-300 font-bold">root</span></div>
+              <div class="font-mono text-sm text-white">Password: <span class="text-violet-300 font-bold">pulse</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Installer -->
+        <section id="installation" class="space-y-4 pt-6 border-t border-white/10">
+          <div class="flex items-center gap-2 text-xs font-mono text-cyan-400">
+            <span>CHAPTER 03</span>
+          </div>
+          <h2 class="text-3xl font-extrabold text-white">Installing to Disk: pulse-install</h2>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Pulse Linux features a custom-engineered guided installer located at `/usr/local/bin/pulse-install`. You can launch it from the GNOME application launcher or directly via terminal.
+          </p>
+
+          <div class="p-4 rounded-xl bg-black border border-white/10 font-mono text-xs text-slate-200 space-y-2">
+            <div class="text-slate-400"># Launch the graphical or interactive installer:</div>
+            <div class="text-cyan-400">sudo pulse-install</div>
+            <div class="text-slate-400 pt-2"># Automated unattended install to a specific disk:</div>
+            <div class="text-emerald-400">sudo pulse-install --target /dev/sda --edition workstation --encrypt</div>
+          </div>
+
+          <div class="text-xs text-slate-400 leading-relaxed space-y-1">
+            <p>• <strong>Automatic Partitioning:</strong> Creates EFI System Partition (ESP), Ext4 root partition, and ZRAM swap.</p>
+            <p>• <strong>LUKS2 Encryption:</strong> Supports military-grade Argon2id encryption for complete disk security.</p>
+            <p>• <strong>UEFI &amp; BIOS GRUB:</strong> Installs universal bootloader compatible with both legacy and modern hardware.</p>
+          </div>
+        </section>
+
+        <!-- Section: CLI Suite -->
+        <section id="pulse-cli" class="space-y-4 pt-6 border-t border-white/10">
+          <div class="flex items-center gap-2 text-xs font-mono text-violet-400">
+            <span>CHAPTER 04</span>
+          </div>
+          <h2 class="text-3xl font-extrabold text-white">Pulse Command Suite Reference</h2>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Pulse Linux ships with a unified administrative CLI tool called <code>pulse</code>:
+          </p>
+
+          <div class="space-y-4 text-xs font-mono">
+            
+            <div class="p-4 rounded-xl bg-slate-900 border border-white/10">
+              <div class="flex items-center justify-between text-cyan-400 font-bold mb-2">
+                <span>pulse info</span>
+                <span class="text-slate-400 font-normal">System Specifications</span>
+              </div>
+              <p class="text-slate-300 font-sans mb-2">Outputs a quick hardware, kernel, desktop environment, and repository overview.</p>
+              <div class="p-2 rounded bg-black text-slate-300">$ pulse info</div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900 border border-white/10">
+              <div class="flex items-center justify-between text-emerald-400 font-bold mb-2">
+                <span>pulse doctor</span>
+                <span class="text-slate-400 font-normal">Health &amp; Diagnostics</span>
+              </div>
+              <p class="text-slate-300 font-sans mb-2">Runs system health verifications: validates APT mirrors, checks DKMS modules, monitors disk SMART health, and inspects AppArmor security status.</p>
+              <div class="p-2 rounded bg-black text-slate-300">$ pulse doctor</div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900 border border-white/10">
+              <div class="flex items-center justify-between text-violet-400 font-bold mb-2">
+                <span>pulse theme [set|list]</span>
+                <span class="text-slate-400 font-normal">Desktop Appearance</span>
+              </div>
+              <p class="text-slate-300 font-sans mb-2">Lists available visual themes and switches the GNOME shell theme, GTK4 accent colors, icon pack, and desktop wallpaper in a single command.</p>
+              <div class="p-2 rounded bg-black text-slate-300">$ pulse theme set pulse-cyber-neon</div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900 border border-white/10">
+              <div class="flex items-center justify-between text-amber-400 font-bold mb-2">
+                <span>pulse module [enable|run|list]</span>
+                <span class="text-slate-400 font-normal">Security Sandbox</span>
+              </div>
+              <p class="text-slate-300 font-sans mb-2">Manages isolated offensive security toolchains (Kali packages) inside dedicated AppArmor containers.</p>
+              <div class="p-2 rounded bg-black text-slate-300">$ pulse module enable kali-core</div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Section: Developer Setup -->
+        <section id="developer-setup" class="space-y-4 pt-6 border-t border-white/10">
+          <div class="flex items-center gap-2 text-xs font-mono text-cyan-400">
+            <span>CHAPTER 05</span>
+          </div>
+          <h2 class="text-3xl font-extrabold text-white">Developer Toolchains &amp; Environments</h2>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Pulse Linux is configured to let developers hit the ground running without spending hours configuring build prerequisites:
+          </p>
+
+          <div class="p-4 rounded-xl bg-slate-900 border border-white/10 space-y-3 text-xs text-slate-300">
+            <div>
+              <span class="font-bold text-white">Docker &amp; Containerization:</span>
+              <p class="text-slate-400">Native support for Docker Engine, containerd, and rootless Podman.</p>
+            </div>
+            <div>
+              <span class="font-bold text-white">Languages Pre-supported:</span>
+              <p class="text-slate-400">Python 3.11, GCC/G++, Clang, Make, CMake, Git, and OpenSSH.</p>
+            </div>
+            <div>
+              <span class="font-bold text-white">Code Editors:</span>
+              <p class="text-slate-400">Install VS Code, Neovim, or JetBrains IDEs directly from official apt repositories without PPA breakage.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Cybersecurity Sandboxing -->
+        <section id="security-sandbox" class="space-y-4 pt-6 border-t border-white/10">
+          <div class="flex items-center gap-2 text-xs font-mono text-emerald-400">
+            <span>CHAPTER 06</span>
+          </div>
+          <h2 class="text-3xl font-extrabold text-white">Kali Linux Security Sandboxing</h2>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            In standard distributions, adding Kali repositories to a Debian or Ubuntu system causes severe dependency hell because Kali regularly tracks bleeding-edge rolling libraries.
+          </p>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Pulse Linux solves this by utilizing <strong>Modular Security Isolation</strong>:
+          </p>
+
+          <div class="p-5 rounded-xl bg-emerald-950/30 border border-emerald-500/30 text-xs text-slate-300 space-y-2">
+            <p>1. Kali utilities run in decoupled containerized namespaces with shared X11/Wayland and network socket forwarding.</p>
+            <p>2. Debian Bookworm desktop libraries remain 100% pure and untouched.</p>
+            <p>3. All security scans, packet captures, and reverse engineering tools execute with full hardware speed while keeping your base workstation safe from breakage.</p>
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10 bg-slate-950 py-10 text-xs text-slate-400 text-center">
+    <div class="max-w-7xl mx-auto px-4">
+      <p>Pulse Linux Documentation. Built with Debian 12 Bookworm stability. Released under GPLv3 and MIT licenses.</p>
+      <p class="mt-2 text-slate-500">Copyright &copy; 2026 Pulse Linux Project. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
