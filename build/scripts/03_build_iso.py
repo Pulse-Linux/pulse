@@ -117,7 +117,7 @@ def build_iso(force_squashfs=True):
 
     if OUTPUT_ISO.exists():
         OUTPUT_ISO.unlink()
-    if OUTPUT_ISO_ALIAS.exists():
+    if OUTPUT_ISO_ALIAS.is_symlink() or OUTPUT_ISO_ALIAS.exists():
         OUTPUT_ISO_ALIAS.unlink()
 
     i386_pc_dir = REPO_ROOT / "build" / "tools" / "lib" / "grub" / "i386-pc"
