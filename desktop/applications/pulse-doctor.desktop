@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Pulse System Doctor
+Comment=Run automated health and security diagnostics
+Exec=gnome-terminal -- /bin/bash -c "pulse doctor; echo; echo -e '\\033[1;36mPress any key to close this terminal...\\033[0m'; read -n 1 -s"
+Icon=utilities-system-monitor
+Terminal=false
+Type=Application
+Categories=System;Utility;

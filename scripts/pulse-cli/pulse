@@ -479,6 +479,131 @@ def cmd_clean(args):
     return 0
 
 
+THEMES_CATALOG = {
+    "pulse-dark": {
+        "name": "Pulse-Dark",
+        "title": "Pulse Dark (Default)",
+        "wallpaper": "/usr/share/backgrounds/pulse/pulse-dark-4k.svg",
+        "color_scheme": "prefer-dark",
+        "desc": "Electric Violet & Pulse Blue on Dark Charcoal",
+        "accent": "\033[38;2;120;82;255m",
+    },
+    "pulse-light": {
+        "name": "Pulse-Light",
+        "title": "Pulse Light",
+        "wallpaper": "/usr/share/backgrounds/pulse/pulse-light-4k.svg",
+        "color_scheme": "default",
+        "desc": "Clean Minimal Slate White with Ice Blue accents",
+        "accent": "\033[38;2;99;102;241m",
+    },
+    "pulse-cyber-neon": {
+        "name": "Pulse-Cyber-Neon",
+        "title": "Pulse Cyber Neon",
+        "wallpaper": "/usr/share/backgrounds/pulse/pulse-cyber-neon-4k.svg",
+        "color_scheme": "prefer-dark",
+        "desc": "High-voltage Synthwave Cyan & Neon Magenta",
+        "accent": "\033[38;2;0;245;255m",
+    },
+    "pulse-midnight": {
+        "name": "Pulse-Midnight",
+        "title": "Pulse Midnight Minimal",
+        "wallpaper": "/usr/share/backgrounds/pulse/pulse-midnight-minimal-4k.svg",
+        "color_scheme": "prefer-dark",
+        "desc": "Ultra-dark Stealth Obsidian for focused coding",
+        "accent": "\033[38;2;139;92;246m",
+    },
+    "pulse-security-slate": {
+        "name": "Pulse-Security-Slate",
+        "title": "Pulse Security Slate",
+        "wallpaper": "/usr/share/backgrounds/pulse/pulse-security-slate-4k.svg",
+        "color_scheme": "prefer-dark",
+        "desc": "Tactical Carbon Gray with Terminal Green indicators",
+        "accent": "\033[38;2;0;230;118m",
+    },
+}
+
+
+def cmd_theme(args):
+    subcmd = args[0].lower() if args else "list"
+
+    if subcmd in ("list", "ls"):
+        print(f"{C_BOLD}=== Pulse Linux Theme & Wallpaper Catalog ==={C_RESET}\n")
+        current_theme = "pulse-dark"
+        conf_path = Path.home() / ".config" / "pulse" / "theme.conf"
+        if conf_path.exists():
+            try:
+                for line in conf_path.read_text().splitlines():
+                    if line.startswith("CURRENT_THEME="):
+                        current_theme = line.split("=", 1)[1].strip().lower()
+            except Exception:
+                pass
+
+        for tid, tinfo in THEMES_CATALOG.items():
+            is_active = (tid == current_theme)
+            active_badge = f"{C_GREEN}[ACTIVE]{C_RESET}" if is_active else "        "
+            print(f"  {active_badge} {tinfo['accent']}{C_BOLD}{tid:<22}{C_RESET} - {tinfo['title']}")
+            print(f"             Description: {tinfo['desc']}")
+            print(f"             Wallpaper  : {tinfo['wallpaper']}\n")
+
+        print(f"To apply a theme: {C_VIOLET}pulse theme set <theme-name>{C_RESET}")
+        print(f"Example: {C_BLUE}pulse theme set pulse-cyber-neon{C_RESET}\n")
+        return 0
+
+    elif subcmd in ("set", "apply"):
+        if len(args) < 2:
+            print(f"{C_RED}Error:{C_RESET} Missing theme name.")
+            print(f"Usage: pulse theme set <{' | '.join(THEMES_CATALOG.keys())}>")
+            return 1
+        target = args[1].lower().replace("_", "-")
+        if target not in THEMES_CATALOG:
+            print(f"{C_RED}Error:{C_RESET} Unknown theme '{target}'. Available themes:")
+            for t in THEMES_CATALOG.keys():
+                print(f"  - {t}")
+            return 1
+
+        tinfo = THEMES_CATALOG[target]
+        print(f"{C_BOLD}Applying theme: {tinfo['accent']}{tinfo['title']}{C_RESET}...")
+
+        # 1. Apply via gsettings if available
+        if shutil.which("gsettings"):
+            wp_uri = f"file://{tinfo['wallpaper']}"
+            run_cmd(f"gsettings set org.gnome.desktop.interface gtk-theme '{tinfo['name']}'")
+            run_cmd(f"gsettings set org.gnome.desktop.interface color-scheme '{tinfo['color_scheme']}'")
+            run_cmd(f"gsettings set org.gnome.desktop.background picture-uri '{wp_uri}'")
+            run_cmd(f"gsettings set org.gnome.desktop.background picture-uri-dark '{wp_uri}'")
+            print(f"  {C_GREEN}✓ GNOME GTK theme set to: {tinfo['name']}{C_RESET}")
+            print(f"  {C_GREEN}✓ Wallpaper updated to: {tinfo['wallpaper']}{C_RESET}")
+            print(f"  {C_GREEN}✓ Color scheme updated to: {tinfo['color_scheme']}{C_RESET}")
+
+        # 2. Persist to user config
+        conf_dir = Path.home() / ".config" / "pulse"
+        conf_dir.mkdir(parents=True, exist_ok=True)
+        (conf_dir / "theme.conf").write_text(f"CURRENT_THEME={target}\nTHEME_NAME={tinfo['name']}\nWALLPAPER={tinfo['wallpaper']}\n")
+
+        print(f"\n{C_GREEN}✓ Theme '{tinfo['title']}' activated successfully!{C_RESET}\n")
+        return 0
+
+    elif subcmd in ("get", "current", "status"):
+        conf_path = Path.home() / ".config" / "pulse" / "theme.conf"
+        curr = "pulse-dark"
+        if conf_path.exists():
+            try:
+                for line in conf_path.read_text().splitlines():
+                    if line.startswith("CURRENT_THEME="):
+                        curr = line.split("=", 1)[1].strip()
+            except Exception:
+                pass
+        tinfo = THEMES_CATALOG.get(curr, THEMES_CATALOG["pulse-dark"])
+        print(f"Current theme: {tinfo['accent']}{C_BOLD}{tinfo['title']}{C_RESET} ({curr})")
+        print(f"Wallpaper: {tinfo['wallpaper']}")
+        return 0
+
+    else:
+        print(f"{C_RED}Unknown theme action:{C_RESET} {subcmd}")
+        print("Usage: pulse theme [list | set <name> | current]")
+        return 1
+
+
 def main():
     if len(sys.argv) < 2:
         print_banner()
@@ -486,6 +611,7 @@ def main():
         print("Commands:")
         print(f"  {C_VIOLET}info{C_RESET}            Display comprehensive system overview")
         print(f"  {C_VIOLET}doctor{C_RESET}          Run automated system health and diagnostic checks")
+        print(f"  {C_VIOLET}theme <action>{C_RESET}  Manage themes & wallpapers (list, set, current)")
         print(f"  {C_VIOLET}update{C_RESET}          Perform safe system update")
         print(f"  {C_VIOLET}security status{C_RESET} Audit firewall, AppArmor, disk encryption & ports")
         print(f"  {C_VIOLET}install <prof>{C_RESET}  Install environment profile (developer, security, etc.)")
@@ -502,6 +628,8 @@ def main():
         cmd_info(args)
     elif cmd == "doctor":
         cmd_doctor(args)
+    elif cmd == "theme":
+        sys.exit(cmd_theme(args))
     elif cmd == "security":
         if args and args[0].lower() == "status":
             cmd_security_status(args[1:])

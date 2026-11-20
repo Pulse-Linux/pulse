@@ -19,10 +19,11 @@ ROOTFS_DIR = WORK_DIR / "rootfs"
 ISO_TREE = WORK_DIR / "iso_tree"
 INITRD_IMG = WORK_DIR / "initrd.img"
 RELEASE_DIR = REPO_ROOT / "release"
-OUTPUT_ISO = RELEASE_DIR / "pulse-linux-core-amd64.iso"
+OUTPUT_ISO = RELEASE_DIR / "pulse-linux-1.0-gnome-amd64.iso"
+OUTPUT_ISO_ALIAS = RELEASE_DIR / "pulse-linux-gnome-amd64.iso"
 
 GRUB_CFG_CONTENT = """set default="0"
-set timeout=2
+set timeout=3
 
 # Serial and Console Terminal configuration
 insmod serial
@@ -36,22 +37,22 @@ set color_highlight=white/magenta
 set menu_color_normal=cyan/black
 set menu_color_highlight=white/blue
 
-echo "Booting Pulse Linux 1.0 (Vanguard)..."
+echo "Booting Pulse Linux 1.0 (Vanguard GNOME Workstation)..."
 
-menuentry "Pulse Linux 1.0 (Live AMD64 - Default)" --class pulse --class gnu-linux --class gnu --class os {
+menuentry "Pulse Linux 1.0 (Live GNOME AMD64 - Default)" --class pulse --class gnu-linux --class gnu --class os {
     echo "Loading Pulse Linux kernel..."
-    linux /live/vmlinuz boot=live console=tty0 console=ttyS0,115200
-    echo "Loading Pulse Linux initial ramdisk..."
+    linux /live/vmlinuz boot=live quiet splash console=tty0 console=ttyS0,115200
+    echo "Loading initial ramdisk..."
     initrd /live/initrd.img
 }
 
-menuentry "Pulse Linux 1.0 (Live AMD64 - Safe Graphics / Nomodeset)" --class pulse --class gnu-linux {
+menuentry "Pulse Linux 1.0 (Live GNOME AMD64 - Safe Graphics / Nomodeset)" --class pulse --class gnu-linux {
     echo "Loading Pulse Linux in Safe Graphics Mode..."
     linux /live/vmlinuz boot=live nomodeset console=tty0 console=ttyS0,115200
     initrd /live/initrd.img
 }
 
-menuentry "Pulse Linux 1.0 (Live AMD64 - Debug & Verbose Boot)" --class pulse --class gnu-linux {
+menuentry "Pulse Linux 1.0 (Live GNOME AMD64 - Verbose Diagnostic Boot)" --class pulse --class gnu-linux {
     echo "Loading Pulse Linux in Verbose Diagnostic Mode..."
     linux /live/vmlinuz boot=live debug verbose console=tty0 console=ttyS0,115200
     initrd /live/initrd.img
@@ -67,9 +68,9 @@ submenu "Advanced System Options" {
 }
 """
 
-def build_iso():
+def build_iso(force_squashfs=True):
     print(f"\n{'-'*60}")
-    print("  Phase 1: Assembling Pulse Linux Bootable Hybrid ISO")
+    print("  Pulse Linux: Assembling Bootable Hybrid ISO (GNOME Edition)")
     print(f"{'-'*60}\n")
 
     RELEASE_DIR.mkdir(parents=True, exist_ok=True)
@@ -78,11 +79,15 @@ def build_iso():
     grub_dir = ISO_TREE / "boot" / "grub"
     grub_dir.mkdir(parents=True, exist_ok=True)
 
-    # 1. Compress Rootfs into SquashFS if not already existing
+    # 1. Compress Rootfs into SquashFS
     squashfs_dest = live_dir / "filesystem.squashfs"
+    if force_squashfs and squashfs_dest.exists():
+        print("Regenerating SquashFS image for updated rootfs...")
+        squashfs_dest.unlink()
+
     if not squashfs_dest.exists():
         print(f"Compressing rootfs into SquashFS ({squashfs_dest})...")
-        cmd = f"mksquashfs '{ROOTFS_DIR}' '{squashfs_dest}' -comp gzip -noappend -all-root -e boot"
+        cmd = f"mksquashfs '{ROOTFS_DIR}' '{squashfs_dest}' -comp gzip -Xcompression-level 1 -no-duplicates -noappend -all-root -e boot"
         res = subprocess.run(cmd, shell=True)
         if res.returncode != 0:
             raise RuntimeError("Failed generating SquashFS")
@@ -90,7 +95,7 @@ def build_iso():
         print(f"  ✓ SquashFS compressed successfully ({sq_size_mb:.2f} MB)")
     else:
         sq_size_mb = squashfs_dest.stat().st_size / (1024 * 1024)
-        print(f"  ✓ Reusing existing SquashFS ({sq_size_mb:.2f} MB)")
+        print(f"  ✓ Using SquashFS image ({sq_size_mb:.2f} MB)")
 
     # 2. Copy Kernel and Initrd
     vmlinuz_src = next((ROOTFS_DIR / "boot").glob("vmlinuz-*"), None)
@@ -112,22 +117,27 @@ def build_iso():
 
     if OUTPUT_ISO.exists():
         OUTPUT_ISO.unlink()
+    if OUTPUT_ISO_ALIAS.exists():
+        OUTPUT_ISO_ALIAS.unlink()
 
     i386_pc_dir = REPO_ROOT / "build" / "tools" / "lib" / "grub" / "i386-pc"
     d_flag = f"-d '{i386_pc_dir}'" if i386_pc_dir.exists() else ""
     mkrescue_cmd = (
         f"grub-mkrescue {d_flag} -o '{OUTPUT_ISO}' '{ISO_TREE}' "
-        f"-- -volid 'PULSE_CORE'"
+        f"-- -volid 'PULSE_LIVE'"
     )
     res = subprocess.run(mkrescue_cmd, shell=True, env=env)
     if res.returncode != 0:
         raise RuntimeError("grub-mkrescue failed generating ISO image")
 
+    # Create alias symlink
+    OUTPUT_ISO_ALIAS.symlink_to(OUTPUT_ISO.name)
+
     iso_size_mb = OUTPUT_ISO.stat().st_size / (1024 * 1024)
     print(f"\n[SUCCESS] Bootable ISO produced: {OUTPUT_ISO} ({iso_size_mb:.2f} MB)")
 
     # 5. Compute SHA256 Checksum
-    print("Calculating SHA256 release checksum...")
+    print("Calculating SHA256 release checksums...")
     h = hashlib.sha256()
     with open(OUTPUT_ISO, "rb") as f:
         while chunk := f.read(1024 * 1024):
@@ -135,9 +145,10 @@ def build_iso():
     sha256_val = h.hexdigest()
     
     sha_file = RELEASE_DIR / "SHA256SUMS"
-    sha_file.write_text(f"{sha256_val}  {OUTPUT_ISO.name}\n")
+    sha_file.write_text(f"{sha256_val}  {OUTPUT_ISO.name}\n{sha256_val}  {OUTPUT_ISO_ALIAS.name}\n")
     print(f"  SHA256: {sha256_val}")
-    print(f"  Checksum written to: {sha_file}\n")
+    print(f"  Checksums written to: {sha_file}\n")
 
 if __name__ == "__main__":
-    build_iso()
+    force = "--no-force" not in sys.argv
+    build_iso(force_squashfs=force)

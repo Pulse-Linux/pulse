@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Themes & Wallpapers
+Comment=Switch Pulse Linux themes, accents, and wallpapers
+Exec=/usr/local/bin/pulse-theme-gui
+Icon=preferences-desktop-theme
+Terminal=false
+Type=Application
+Categories=Settings;DesktopSettings;

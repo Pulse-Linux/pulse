@@ -1,0 +1,84 @@
+/* Pulse Linux Pulse Midnight Minimal - GTK Style Definitions */
+@define-color accent_color #8b5cf6;
+@define-color accent_bg_color #8b5cf6;
+@define-color accent_fg_color #ffffff;
+@define-color window_bg_color #07080b;
+@define-color window_fg_color #e2e8f0;
+@define-color view_bg_color #0d0e14;
+@define-color view_fg_color #e2e8f0;
+@define-color headerbar_bg_color #090b10;
+@define-color headerbar_fg_color #e2e8f0;
+@define-color headerbar_border_color #1a1c23;
+@define-color card_bg_color #0d0e14;
+@define-color card_fg_color #e2e8f0;
+@define-color dialog_bg_color #0d0e14;
+@define-color dialog_fg_color #e2e8f0;
+@define-color popover_bg_color #0d0e14;
+@define-color popover_fg_color #e2e8f0;
+@define-color destructive_color #ef4444;
+@define-color destructive_bg_color #ef4444;
+@define-color destructive_fg_color #ffffff;
+@define-color success_color #10b981;
+@define-color warning_color #f59e0b;
+@define-color error_color #ef4444;
+
+window {
+    background-color: @window_bg_color;
+    color: @window_fg_color;
+}
+
+headerbar {
+    background-color: @headerbar_bg_color;
+    border-bottom: 1px solid @headerbar_border_color;
+    box-shadow: none;
+}
+
+button {
+    border-radius: 8px;
+    padding: 6px 14px;
+    background-color: @card_bg_color;
+    color: @window_fg_color;
+    border: 1px solid @headerbar_border_color;
+    transition: all 150ms ease;
+}
+
+button:hover {
+    background-color: alpha(@accent_color, 0.15);
+    border-color: @accent_color;
+}
+
+button:active {
+    background-color: @accent_color;
+    color: @accent_fg_color;
+}
+
+button.suggested-action {
+    background-color: @accent_color;
+    color: @accent_fg_color;
+    border: none;
+}
+
+entry {
+    border-radius: 8px;
+    background-color: @view_bg_color;
+    color: @view_fg_color;
+    border: 1px solid @headerbar_border_color;
+    padding: 6px 10px;
+}
+
+entry:focus {
+    border-color: @accent_color;
+    box-shadow: 0 0 0 2px alpha(@accent_color, 0.35);
+}
+
+/* Scrollbar refinement */
+scrollbar slider {
+    min-width: 6px;
+    min-height: 6px;
+    border-radius: 4px;
+    background-color: alpha(@window_fg_color, 0.25);
+}
+
+scrollbar slider:hover {
+    background-color: @accent_color;
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
+<wallpapers>
+  <wallpaper deleted="false">
+    <name>Pulse Dark (Default)</name>
+    <filename>/usr/share/backgrounds/pulse/pulse-dark-4k.svg</filename>
+    <options>zoom</options>
+    <pcolor>#12141a</pcolor>
+    <scolor>#000000</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Pulse Light</name>
+    <filename>/usr/share/backgrounds/pulse/pulse-light-4k.svg</filename>
+    <options>zoom</options>
+    <pcolor>#f8fafc</pcolor>
+    <scolor>#e2e8f0</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Pulse Cyber Neon</name>
+    <filename>/usr/share/backgrounds/pulse/pulse-cyber-neon-4k.svg</filename>
+    <options>zoom</options>
+    <pcolor>#05070e</pcolor>
+    <scolor>#000000</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Pulse Midnight Minimal</name>
+    <filename>/usr/share/backgrounds/pulse/pulse-midnight-minimal-4k.svg</filename>
+    <options>zoom</options>
+    <pcolor>#07080b</pcolor>
+    <scolor>#000000</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Pulse Security Slate</name>
+    <filename>/usr/share/backgrounds/pulse/pulse-security-slate-4k.svg</filename>
+    <options>zoom</options>
+    <pcolor>#0f141c</pcolor>
+    <scolor>#000000</scolor>
+  </wallpaper>
+</wallpapers>

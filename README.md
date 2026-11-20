@@ -18,9 +18,12 @@ Pulse Linux is a modern, production-grade Linux distribution engineered for soft
   - Android application support via Waydroid
   - Windows application compatibility via Wine, Bottles, and Proton
 - **Professional Desktop Experience**:
-  - Primary Desktop: KDE Plasma with a distinctive Pulse dark theme (Electric Violet `#7852FF`, Deep Navy `#0B1021`, Pulse Blue `#00D2FF`)
-  - Pulse Control Center & System Hubs
-  - Terminal-first workflow powered by modern CLI tooling (Starship, ripgrep, bat, fzf, eza)
+  - Desktop Environment: GNOME Workstation (`gnome-shell`, `gnome-session`, GDM3 autologin, Wayland & X11)
+  - Full Basic Utility Suite: Nautilus, GNOME Terminal, Gedit, Nano, Vim Tiny, GNOME Calculator, Eye of GNOME (`eog`), GNOME System Monitor, `htop`, File Roller, 7z, Unzip, Zip, NetworkManager
+  - 5 Distinct Visual Themes: Pulse Dark (default), Pulse Light, Pulse Cyber Neon, Pulse Midnight Minimal, Pulse Security Slate
+  - 5 4K Vector Wallpapers & native GNOME Settings integration
+  - Interactive Theme Switcher: CLI (`pulse theme`) and GUI (`pulse-theme-gui`)
+  - Terminal-first workflow powered by modern Pulse CLI tooling (`pulse info`, `pulse doctor`, `pulse theme`)
 - **Security-First Architecture**:
   - Full-disk encryption with LUKS and Secure Boot compatibility
   - AppArmor security enforcement and nftables/UFW firewall active by default
@@ -62,14 +65,17 @@ Pulse Linux builds reproducibly using rootless container staging and Debian pack
 # 1. Setup build toolchain
 python3 build/scripts/00_setup_toolchain.py
 
-# 2. Build rootfs
+# 2. Build rootfs (GNOME desktop, full utilities, themes, wallpapers)
 python3 build/scripts/01_build_rootfs.py
 
-# 3. Assemble bootable ISO
-python3 build/scripts/02_build_iso.py
+# 3. Build live initial ramdisk
+python3 build/scripts/02_build_initramfs.py
 
-# 4. Test in QEMU
-./build/scripts/03_test_qemu.sh
+# 4. Assemble bootable hybrid ISO
+python3 build/scripts/03_build_iso.py
+
+# 5. Test in QEMU with KVM acceleration
+./build/scripts/04_test_qemu.sh
 ```
 
 ---

@@ -1,0 +1,86 @@
+/* Pulse Linux Pulse Dark - GNOME Shell Stylesheet */
+
+#panel {
+    background-color: rgba(18, 20, 26, 0.88);
+    font-weight: 500;
+    font-size: 11pt;
+    height: 34px;
+    border-bottom: 1px solid #282c37;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+#panel .panel-button {
+    color: #f1f5f9;
+    border-radius: 6px;
+    margin: 2px 4px;
+    padding: 0 10px;
+    transition: all 150ms ease-in-out;
+}
+
+#panel .panel-button:hover {
+    background-color: #7852ff33;
+    color: #7852ff;
+}
+
+#panel .panel-button:active,
+#panel .panel-button:checked {
+    background-color: #7852ff;
+    color: #ffffff;
+}
+
+/* Dash / Dock styling */
+#dash .dash-background {
+    background-color: rgba(18, 20, 26, 0.88);
+    border-radius: 18px;
+    border: 1px solid #282c37;
+    padding: 6px;
+}
+
+.app-well-app:hover .overview-icon,
+.show-apps:hover .overview-icon {
+    background-color: #7852ff33;
+    border-radius: 12px;
+}
+
+.app-well-app:active .overview-icon,
+.app-well-app:checked .overview-icon {
+    background-color: #7852ff66;
+    border-radius: 12px;
+}
+
+/* Modal dialogs & popup menus */
+.popup-menu-content {
+    background-color: #1a1d26;
+    border: 1px solid #282c37;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    color: #f1f5f9;
+    padding: 8px;
+}
+
+.popup-menu-item:hover {
+    background-color: #7852ff33;
+    color: #7852ff;
+    border-radius: 6px;
+}
+
+.popup-menu-item:active {
+    background-color: #7852ff;
+    color: #ffffff;
+    border-radius: 6px;
+}
+
+/* Notifications */
+.message-list {
+    background-color: #1a1d26;
+    border: 1px solid #282c37;
+    border-radius: 14px;
+    color: #f1f5f9;
+}
+
+.notification-banner {
+    background-color: #1a1d26;
+    border: 1px solid #7852ff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}

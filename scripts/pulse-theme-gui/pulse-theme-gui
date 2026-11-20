@@ -1,0 +1,62 @@
+#!/usr/bin/env python3
+"""
+Pulse Linux Graphical Theme & Wallpaper Switcher
+Allows user to preview and apply Pulse Linux themes and wallpapers.
+"""
+
+import sys
+import os
+import subprocess
+from pathlib import Path
+
+THEMES = [
+    ("pulse-dark", "Pulse Dark (Default)", "Electric Violet & Pulse Blue on Dark Charcoal", "/usr/share/backgrounds/pulse/pulse-dark-4k.svg", "#7852FF"),
+    ("pulse-light", "Pulse Light", "Clean Minimal Slate White with Ice Blue accents", "/usr/share/backgrounds/pulse/pulse-light-4k.svg", "#6366F1"),
+    ("pulse-cyber-neon", "Pulse Cyber Neon", "High-voltage Synthwave Cyan & Neon Magenta", "/usr/share/backgrounds/pulse/pulse-cyber-neon-4k.svg", "#00F5FF"),
+    ("pulse-midnight", "Pulse Midnight Minimal", "Ultra-dark Stealth Obsidian for focused coding", "/usr/share/backgrounds/pulse/pulse-midnight-minimal-4k.svg", "#8B5CF6"),
+    ("pulse-security-slate", "Pulse Security Slate", "Tactical Carbon Gray with Terminal Green indicators", "/usr/share/backgrounds/pulse/pulse-security-slate-4k.svg", "#00E676")
+]
+
+def apply_theme(theme_id):
+    cmd = f"pulse theme set {theme_id}"
+    subprocess.run(cmd, shell=True)
+
+def main():
+    # If running inside a desktop environment with zenity or python-gi
+    if os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY"):
+        # Try zenity list dialog if available
+        if subprocess.run("which zenity", shell=True, stdout=subprocess.DEVNULL).returncode == 0:
+            options = []
+            for tid, title, desc, wp, color in THEMES:
+                options.extend([tid, title, desc])
+            zenity_cmd = [
+                "zenity", "--list", "--title=Pulse Linux Theme Selector",
+                "--column=ID", "--column=Theme Name", "--column=Description",
+                "--width=650", "--height=350",
+                "--text=Choose a Pulse Linux Theme & Wallpaper:"
+            ] + options
+            res = subprocess.run(zenity_cmd, stdout=subprocess.PIPE, text=True)
+            if res.returncode == 0 and res.stdout.strip():
+                selected = res.stdout.strip()
+                apply_theme(selected)
+                subprocess.run(f"zenity --info --text='Theme applied: {selected}' --timeout=2", shell=True)
+                return
+
+    # Fallback to interactive terminal switcher
+    print("\n\033[1m=== Pulse Linux Theme Selector ===\033[0m\n")
+    for idx, (tid, title, desc, wp, color) in enumerate(THEMES, 1):
+        print(f"  [{idx}] \033[1m{title:<28}\033[0m - {desc}")
+    print("\n  [0] Exit without changing\n")
+    
+    try:
+        choice = input("Select theme number (1-5): ").strip()
+        if choice in ("1", "2", "3", "4", "5"):
+            selected_theme = THEMES[int(choice) - 1][0]
+            apply_theme(selected_theme)
+        else:
+            print("Cancelled.")
+    except (KeyboardInterrupt, EOFError):
+        print("\nExiting.")
+
+if __name__ == "__main__":
+    main()

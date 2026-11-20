@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Pulse Light
+Comment=Crisp and modern light theme with Ice Blue and Indigo accents
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=Pulse Light
+MetacityTheme=Pulse Light
+IconTheme=Adwaita
+CursorTheme=Adwaita
+ButtonLayout=:minimize,maximize,close

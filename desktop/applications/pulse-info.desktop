@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Pulse Linux Welcome
+Comment=View Pulse Linux system information and architecture
+Exec=gnome-terminal -- /bin/bash -c "pulse info; echo; echo -e '\\033[1;36mPress any key to close this terminal...\\033[0m'; read -n 1 -s"
+Icon=help-about
+Terminal=false
+Type=Application
+Categories=System;

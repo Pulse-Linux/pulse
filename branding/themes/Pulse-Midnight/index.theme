@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Pulse Midnight Minimal
+Comment=Deep stealth obsidian minimalist theme for focused development
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=Pulse Midnight Minimal
+MetacityTheme=Pulse Midnight Minimal
+IconTheme=Adwaita
+CursorTheme=Adwaita
+ButtonLayout=:minimize,maximize,close
