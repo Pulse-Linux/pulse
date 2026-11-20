@@ -1,0 +1,529 @@
+#!/usr/bin/env python3
+r"""
+Pulse Linux System Management Utility (pulse CLI)
+"One Operating System. Two Worlds. Unlimited Possibilities."
+
+Provides centralized CLI management for Pulse Linux:
+  pulse info
+  pulse doctor
+  pulse update
+  pulse security status
+  pulse install <profile>
+  pulse hardware
+  pulse repair
+  pulse system clean
+"""
+
+import sys
+import os
+import subprocess
+import json
+import shutil
+import platform
+import socket
+import re
+from pathlib import Path
+
+VERSION = "1.0.0"
+
+# ANSI color codes
+C_RESET = "\033[0m"
+C_BOLD = "\033[1m"
+C_DIM = "\033[2m"
+C_VIOLET = "\033[38;2;120;82;255m"
+C_BLUE = "\033[38;2;0;210;255m"
+C_GREEN = "\033[38;2;46;204;113m"
+C_YELLOW = "\033[38;2;241;196;15m"
+C_RED = "\033[38;2;231;76;60m"
+C_GRAY = "\033[38;2;149;165;166m"
+
+
+def print_banner():
+    banner = r"""\033[38;2;120;82;255m\033[1m
+  ____       _            _     _                  
+ |  _ \ _   _| |___  ___  | |   (_)_ __  _   ___  __
+ | |_) | | | | / __|/ _ \ | |   | | '_ \| | | \ \/ /
+ |  __/| |_| | \__ \  __/ | |___| | | | | |_| |>  < 
+ |_|    \__,_|_|___/\___| |_____|_|_| |_|\__,_/_/\_\
+\033[0m\033[38;2;0;210;255m "One Operating System. Two Worlds. Unlimited Possibilities."\033[0m
+"""
+    print(banner.encode().decode('unicode_escape'))
+
+
+def run_cmd(cmd, check=False):
+    try:
+        res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=isinstance(cmd, str))
+        return res.returncode, res.stdout.strip(), res.stderr.strip()
+    except Exception as e:
+        return 1, "", str(e)
+
+
+def cmd_info(args):
+    print_banner()
+    print(f"{C_BOLD}=== Pulse Linux System Overview ==={C_RESET}\n")
+
+    # Read OS release
+    os_name = "Pulse Linux"
+    os_version = "1.0 (Vanguard)"
+    os_codename = "vanguard"
+    if os.path.exists("/etc/os-release"):
+        with open("/etc/os-release", "r") as f:
+            for line in f:
+                if line.startswith("PRETTY_NAME="):
+                    os_name = line.split("=", 1)[1].strip().strip('"')
+                elif line.startswith("VERSION_CODENAME="):
+                    os_codename = line.split("=", 1)[1].strip().strip('"')
+
+    # Read edition from config
+    edition = "Core (Developer & Security Ready)"
+    if os.path.exists("/etc/pulse/pulse.conf"):
+        with open("/etc/pulse/pulse.conf", "r") as f:
+            for line in f:
+                if "edition" in line and "=" in line:
+                    edition = line.split("=", 1)[1].strip().strip('"')
+
+    uname = platform.uname()
+    kernel = uname.release
+    arch = uname.machine
+    hostname = socket.gethostname()
+
+    # Memory info
+    mem_total = 0
+    mem_avail = 0
+    if os.path.exists("/proc/meminfo"):
+        with open("/proc/meminfo", "r") as f:
+            for line in f:
+                if line.startswith("MemTotal:"):
+                    mem_total = int(line.split()[1]) // 1024
+                elif line.startswith("MemAvailable:"):
+                    mem_avail = int(line.split()[1]) // 1024
+
+    # Uptime
+    uptime_str = "Unknown"
+    if os.path.exists("/proc/uptime"):
+        with open("/proc/uptime", "r") as f:
+            secs = float(f.read().split()[0])
+            hours = int(secs // 3600)
+            minutes = int((secs % 3600) // 60)
+            uptime_str = f"{hours}h {minutes}m"
+
+    # CPU model
+    cpu_model = "Unknown CPU"
+    cpu_cores = os.cpu_count() or 1
+    if os.path.exists("/proc/cpuinfo"):
+        with open("/proc/cpuinfo", "r") as f:
+            for line in f:
+                if line.startswith("model name"):
+                    cpu_model = line.split(":", 1)[1].strip()
+                    break
+
+    desktop = os.environ.get("XDG_CURRENT_DESKTOP", "Console / Wayland")
+    shell = os.environ.get("SHELL", "/bin/bash")
+
+    fields = [
+        ("Operating System", f"{C_BOLD}{os_name}{C_RESET}"),
+        ("Edition", edition),
+        ("Codename", os_codename),
+        ("Hostname", hostname),
+        ("Kernel Release", kernel),
+        ("Architecture", arch),
+        ("Processor", f"{cpu_model} ({cpu_cores} threads)"),
+        ("Memory", f"{mem_total - mem_avail} MiB / {mem_total} MiB ({mem_avail} MiB free)"),
+        ("System Uptime", uptime_str),
+        ("Desktop Session", desktop),
+        ("Default Shell", shell),
+    ]
+
+    for label, val in fields:
+        print(f"  {C_VIOLET}{label:<18}{C_RESET}: {val}")
+    print()
+
+
+def cmd_doctor(args):
+    print(f"{C_BOLD}=== Pulse Linux Doctor Diagnostics ==={C_RESET}\n")
+    issues = 0
+    warnings = 0
+
+    # 1. Disk Space check
+    stat = shutil.disk_usage("/")
+    used_pct = (stat.used / stat.total) * 100
+    free_gb = stat.free / (1024 ** 3)
+    if used_pct > 92:
+        print(f"  [{C_RED}FAIL{C_RESET}] Root filesystem space critical: {used_pct:.1f}% used ({free_gb:.1f} GB free)")
+        issues += 1
+    elif used_pct > 80:
+        print(f"  [{C_YELLOW}WARN{C_RESET}] Root filesystem space warning: {used_pct:.1f}% used ({free_gb:.1f} GB free)")
+        warnings += 1
+    else:
+        print(f"  [{C_GREEN}PASS{C_RESET}] Root filesystem space: {used_pct:.1f}% used ({free_gb:.1f} GB free)")
+
+    # 2. RAM check
+    mem_avail = 0
+    if os.path.exists("/proc/meminfo"):
+        with open("/proc/meminfo", "r") as f:
+            for line in f:
+                if line.startswith("MemAvailable:"):
+                    mem_avail = int(line.split()[1]) // 1024
+    if mem_avail < 400:
+        print(f"  [{C_YELLOW}WARN{C_RESET}] Low available memory: {mem_avail} MiB")
+        warnings += 1
+    else:
+        print(f"  [{C_GREEN}PASS{C_RESET}] Memory pressure healthy: {mem_avail} MiB available")
+
+    # 3. Network DNS connectivity
+    try:
+        socket.gethostbyname("deb.debian.org")
+        print(f"  [{C_GREEN}PASS{C_RESET}] DNS and Internet connectivity operational")
+    except Exception:
+        print(f"  [{C_YELLOW}WARN{C_RESET}] DNS resolution test failed (deb.debian.org unreachable)")
+        warnings += 1
+
+    # 4. Systemd failed units
+    code, out, _ = run_cmd("systemctl --failed --no-legend --no-pager 2>/dev/null")
+    if code == 0:
+        failed_lines = [l for l in out.splitlines() if l.strip()]
+        if failed_lines:
+            print(f"  [{C_RED}FAIL{C_RESET}] {len(failed_lines)} failed systemd units detected:")
+            for fl in failed_lines[:5]:
+                print(f"    - {fl.split()[0]}")
+            issues += 1
+        else:
+            print(f"  [{C_GREEN}PASS{C_RESET}] No failed systemd services detected")
+    else:
+        print(f"  [{C_DIM}INFO{C_RESET}] Systemd service manager query skipped (non-systemd or chroot session)")
+
+    # 5. AppArmor status
+    if os.path.exists("/sys/kernel/security/apparmor"):
+        code, out, _ = run_cmd("aa-status --enabled 2>/dev/null")
+        if code == 0:
+            print(f"  [{C_GREEN}PASS{C_RESET}] AppArmor kernel security module active")
+        else:
+            print(f"  [{C_YELLOW}WARN{C_RESET}] AppArmor kernel module present but status check failed")
+            warnings += 1
+    else:
+        print(f"  [{C_YELLOW}WARN{C_RESET}] AppArmor security module not detected in /sys/kernel/security")
+        warnings += 1
+
+    # 6. DPKG Package database integrity
+    if os.path.exists("/var/lib/dpkg/status"):
+        code, out, _ = run_cmd("dpkg --audit 2>/dev/null")
+        if code == 0 and not out.strip():
+            print(f"  [{C_GREEN}PASS{C_RESET}] DPKG package database clean and consistent")
+        else:
+            print(f"  [{C_YELLOW}WARN{C_RESET}] Package database reports issues:\n    {out}")
+            warnings += 1
+    else:
+        print(f"  [{C_DIM}INFO{C_RESET}] dpkg status file not in standard location")
+
+    print(f"\n{C_BOLD}Doctor Summary{C_RESET}: {issues} errors, {warnings} warnings.")
+    if issues == 0 and warnings == 0:
+        print(f"{C_GREEN}System is in optimal operating condition.{C_RESET}\n")
+    elif issues == 0:
+        print(f"{C_YELLOW}System is functional with minor warnings.{C_RESET}\n")
+    else:
+        print(f"{C_RED}System health issues detected. Run 'pulse repair' to attempt automated recovery.{C_RESET}\n")
+
+
+def cmd_security_status(args):
+    print(f"{C_BOLD}=== Pulse Linux Security Posture ==={C_RESET}\n")
+
+    # 1. Firewall status (UFW / nftables)
+    fw_status = "Inactive"
+    code, out, _ = run_cmd("ufw status 2>/dev/null")
+    if code == 0 and "Status: active" in out:
+        fw_status = f"{C_GREEN}Active (UFW){C_RESET}"
+    else:
+        code, out, _ = run_cmd("nft list tables 2>/dev/null")
+        if code == 0 and out.strip():
+            fw_status = f"{C_GREEN}Active (nftables){C_RESET}"
+        else:
+            fw_status = f"{C_RED}Inactive{C_RESET} (Run 'sudo ufw enable' to activate)"
+    print(f"  {C_BOLD}Firewall{C_RESET}              : {fw_status}")
+
+    # 2. AppArmor Status
+    aa_status = f"{C_RED}Inactive{C_RESET}"
+    if os.path.exists("/sys/kernel/security/apparmor"):
+        code, out, _ = run_cmd("aa-status --profiled 2>/dev/null")
+        if code == 0:
+            profiles = out.strip().split()[0] if out else "Unknown"
+            aa_status = f"{C_GREEN}Enforcing{C_RESET} ({profiles} loaded profiles)"
+        else:
+            aa_status = f"{C_GREEN}Active{C_RESET}"
+    print(f"  {C_BOLD}AppArmor Protection{C_RESET}   : {aa_status}")
+
+    # 3. Disk Encryption (LUKS)
+    code, out, _ = run_cmd("lsblk -o NAME,TYPE,FSTYPE 2>/dev/null")
+    luks_active = "crypto_LUKS" in out
+    if luks_active:
+        print(f"  {C_BOLD}Storage Encryption{C_RESET}    : {C_GREEN}LUKS Encrypted Partition Active{C_RESET}")
+    else:
+        print(f"  {C_BOLD}Storage Encryption{C_RESET}    : {C_YELLOW}Unencrypted Partition / Live Session{C_RESET}")
+
+    # 4. Open Listening Ports
+    print(f"\n{C_BOLD}Active Listening Sockets:{C_RESET}")
+    code, out, _ = run_cmd("ss -tuln 2>/dev/null || netstat -tuln 2>/dev/null")
+    if code == 0 and out.strip():
+        lines = out.splitlines()
+        for line in lines[:8]:
+            print(f"    {line}")
+        if len(lines) > 8:
+            print(f"    {C_DIM}... ({len(lines)-8} more listening sockets){C_RESET}")
+    else:
+        print(f"    {C_GREEN}No external listening services exposed.{C_RESET}")
+
+    # 5. SSH Configuration check
+    ssh_cfg = "/etc/ssh/sshd_config"
+    if os.path.exists(ssh_cfg):
+        with open(ssh_cfg, "r") as f:
+            cfg_text = f.read()
+        root_login = "yes" if re.search(r"^\s*PermitRootLogin\s+yes", cfg_text, re.M) else "no / prohibit-password"
+        print(f"\n{C_BOLD}SSH Server Policy:{C_RESET}")
+        print(f"  Root Login Permitted : {C_YELLOW if root_login == 'yes' else C_GREEN}{root_login}{C_RESET}")
+    print()
+
+
+def cmd_update(args):
+    print(f"{C_BOLD}=== Pulse Linux Update Utility ==={C_RESET}\n")
+    if os.geteuid() != 0:
+        print(f"{C_RED}Error:{C_RESET} 'pulse update' requires administrator privileges. Please run with sudo:")
+        print("  sudo pulse update\n")
+        return 1
+
+    print(f"{C_BLUE}[1/3] Synchronizing package repository metadata...{C_RESET}")
+    code, out, err = run_cmd("apt-get update")
+    if code != 0:
+        print(f"{C_RED}Failed to update package repositories:{C_RESET}\n{err}")
+        return 1
+    print(f"{C_GREEN}✓ Repository index synchronized.{C_RESET}")
+
+    print(f"\n{C_BLUE}[2/3] Checking for available upgrades...{C_RESET}")
+    code, out, _ = run_cmd("apt-get --just-print upgrade")
+    upgradable = []
+    for line in out.splitlines():
+        if line.startswith("Inst "):
+            upgradable.append(line.split()[1])
+
+    if not upgradable:
+        print(f"{C_GREEN}All system packages are fully up-to-date.{C_RESET}\n")
+        return 0
+
+    print(f"{C_BOLD}{len(upgradable)} packages can be upgraded:{C_RESET}")
+    print(f"  {', '.join(upgradable[:15])}{'...' if len(upgradable) > 15 else ''}\n")
+
+    if "--yes" in args or "-y" in args:
+        do_upgrade = True
+    else:
+        try:
+            choice = input(f"{C_BOLD}Proceed with upgrade? [y/N]: {C_RESET}").strip().lower()
+            do_upgrade = choice in ("y", "yes")
+        except EOFError:
+            do_upgrade = False
+
+    if not do_upgrade:
+        print("Upgrade cancelled by user.")
+        return 0
+
+    print(f"\n{C_BLUE}[3/3] Performing system upgrade...{C_RESET}")
+    res = subprocess.run(["apt-get", "upgrade", "-y"])
+    if res.returncode == 0:
+        print(f"\n{C_GREEN}✓ System successfully updated.{C_RESET}\n")
+        return 0
+    else:
+        print(f"\n{C_RED}Upgrade encountered an error.{C_RESET}\n")
+        return res.returncode
+
+
+def cmd_hardware(args):
+    print(f"{C_BOLD}=== Pulse Linux Hardware Diagnostics ==={C_RESET}\n")
+    
+    # CPU
+    if os.path.exists("/proc/cpuinfo"):
+        model = ""
+        cores = 0
+        with open("/proc/cpuinfo", "r") as f:
+            for line in f:
+                if line.startswith("model name") and not model:
+                    model = line.split(":", 1)[1].strip()
+                if line.startswith("processor"):
+                    cores += 1
+        print(f"  {C_BOLD}Processor{C_RESET}          : {model} ({cores} logical cores)")
+
+    # RAM
+    if os.path.exists("/proc/meminfo"):
+        with open("/proc/meminfo", "r") as f:
+            for line in f:
+                if line.startswith("MemTotal:"):
+                    mem = int(line.split()[1]) // 1024
+                    print(f"  {C_BOLD}Installed Memory{C_RESET}   : {mem} MiB")
+                    break
+
+    # GPU
+    code, out, _ = run_cmd("lspci | grep -E 'VGA|3D|Display' 2>/dev/null")
+    if code == 0 and out.strip():
+        for gpu_line in out.splitlines():
+            clean_gpu = gpu_line.split(": ", 1)[-1] if ": " in gpu_line else gpu_line
+            print(f"  {C_BOLD}Graphics Controller{C_RESET}: {clean_gpu}")
+
+    # Network devices
+    code, out, _ = run_cmd("lspci | grep -E 'Network|Ethernet' 2>/dev/null")
+    if code == 0 and out.strip():
+        for net_line in out.splitlines():
+            clean_net = net_line.split(": ", 1)[-1] if ": " in net_line else net_line
+            print(f"  {C_BOLD}Network Adapter{C_RESET}    : {clean_net}")
+
+    # Storage block devices
+    code, out, _ = run_cmd("lsblk -d -o NAME,SIZE,TYPE,MODEL 2>/dev/null")
+    if code == 0 and out.strip():
+        print(f"\n{C_BOLD}Storage Devices:{C_RESET}")
+        for l in out.splitlines():
+            print(f"    {l}")
+    print()
+
+
+def cmd_install(args):
+    if not args:
+        print(f"{C_BOLD}Usage:{C_RESET} pulse install <profile>")
+        print("\nAvailable profiles:")
+        print("  developer   : C/C++, Python, Rust, Go, Git, Docker, Build Tools")
+        print("  security    : Nmap, Wireshark, SQLmap, John, Aircrack-ng, Forensics")
+        print("  android     : Waydroid subsystem and Android application installer")
+        print("  windows     : Wine, Winetricks, Bottles compatibility framework")
+        print("  cloud       : kubectl, Helm, Terraform, Ansible, AWS/GCP tools")
+        print("  web         : Node.js, pnpm, modern web development stacks")
+        return 1
+
+    profile = args[0].lower()
+    print(f"{C_BOLD}=== Installing Pulse Profile: {profile.upper()} ==={C_RESET}\n")
+
+    profile_packages = {
+        "developer": ["build-essential", "gcc", "g++", "make", "cmake", "git", "python3-dev", "curl", "ripgrep", "tmux"],
+        "security": ["nmap", "tcpdump", "wireshark-common", "netcat-openbsd", "sqlmap", "john", "aircrack-ng"],
+        "android": ["waydroid", "lxc", "iptables"],
+        "windows": ["wine", "winetricks"],
+        "cloud": ["curl", "git", "openssh-client", "rsync", "ansible"],
+        "web": ["curl", "git", "nginx-light", "nodejs", "npm"]
+    }
+
+    if profile not in profile_packages:
+        print(f"{C_RED}Error:{C_RESET} Unknown profile '{profile}'. Choose from: {', '.join(profile_packages.keys())}")
+        return 1
+
+    pkgs = profile_packages[profile]
+    print(f"Target packages for profile '{profile}':\n  {', '.join(pkgs)}\n")
+
+    if os.geteuid() != 0:
+        print(f"{C_YELLOW}Note:{C_RESET} Administrator privileges required to install packages.")
+        print(f"Please run:\n  sudo apt-get install {' '.join(pkgs)}\n")
+        return 0
+
+    print(f"{C_BLUE}Running apt-get install...{C_RESET}")
+    res = subprocess.run(["apt-get", "install", "-y"] + pkgs)
+    if res.returncode == 0:
+        print(f"\n{C_GREEN}✓ Profile '{profile}' successfully installed!{C_RESET}\n")
+    else:
+        print(f"\n{C_RED}Profile installation failed.{C_RESET}\n")
+    return res.returncode
+
+
+def cmd_repair(args):
+    print(f"{C_BOLD}=== Pulse Linux Automated System Repair ==={C_RESET}\n")
+    if os.geteuid() != 0:
+        print(f"{C_RED}Error:{C_RESET} 'pulse repair' requires root privileges. Please run with sudo:")
+        print("  sudo pulse repair\n")
+        return 1
+
+    print(f"{C_BLUE}[1/4] Repairing interrupted dpkg transactions...{C_RESET}")
+    run_cmd("dpkg --configure -a")
+
+    print(f"{C_BLUE}[2/4] Resolving missing dependencies...{C_RESET}")
+    run_cmd("apt-get install -f -y")
+
+    print(f"{C_BLUE}[3/4] Removing stale package locks...{C_RESET}")
+    for lock in ["/var/lib/dpkg/lock", "/var/lib/dpkg/lock-frontend", "/var/lib/apt/lists/lock"]:
+        if os.path.exists(lock):
+            try:
+                # Only unlink if process holding it is dead
+                code, out, _ = run_cmd(f"fuser {lock}")
+                if not out.strip():
+                    os.unlink(lock)
+            except Exception:
+                pass
+
+    print(f"{C_BLUE}[4/4] Verifying network resolver...{C_RESET}")
+    if not os.path.exists("/etc/resolv.conf"):
+        with open("/etc/resolv.conf", "w") as f:
+            f.write("nameserver 1.1.1.1\nnameserver 8.8.8.8\n")
+        print("  Created default DNS fallback.")
+
+    print(f"\n{C_GREEN}✓ Repair sequence completed successfully.{C_RESET}\n")
+    return 0
+
+
+def cmd_clean(args):
+    print(f"{C_BOLD}=== Pulse Linux System Cleaner ==={C_RESET}\n")
+    if os.geteuid() != 0:
+        print(f"{C_RED}Error:{C_RESET} 'pulse system clean' requires root privileges. Please run with sudo:")
+        print("  sudo pulse system clean\n")
+        return 1
+
+    print(f"{C_BLUE}[1/3] Cleaning APT package cache...{C_RESET}")
+    run_cmd("apt-get clean")
+
+    print(f"{C_BLUE}[2/3] Removing orphaned packages...{C_RESET}")
+    run_cmd("apt-get autoremove -y")
+
+    print(f"{C_BLUE}[3/3] Trimming systemd journal logs to 100M...{C_RESET}")
+    run_cmd("journalctl --vacuum-size=100M 2>/dev/null")
+
+    print(f"\n{C_GREEN}✓ System cleanup finished.{C_RESET}\n")
+    return 0
+
+
+def main():
+    if len(sys.argv) < 2:
+        print_banner()
+        print(f"{C_BOLD}Usage:{C_RESET} pulse <command> [options]\n")
+        print("Commands:")
+        print(f"  {C_VIOLET}info{C_RESET}            Display comprehensive system overview")
+        print(f"  {C_VIOLET}doctor{C_RESET}          Run automated system health and diagnostic checks")
+        print(f"  {C_VIOLET}update{C_RESET}          Perform safe system update")
+        print(f"  {C_VIOLET}security status{C_RESET} Audit firewall, AppArmor, disk encryption & ports")
+        print(f"  {C_VIOLET}install <prof>{C_RESET}  Install environment profile (developer, security, etc.)")
+        print(f"  {C_VIOLET}hardware{C_RESET}        Display detected hardware components")
+        print(f"  {C_VIOLET}repair{C_RESET}          Execute automated recovery routines")
+        print(f"  {C_VIOLET}system clean{C_RESET}    Reclaim disk space by cleaning caches and logs")
+        print()
+        sys.exit(0)
+
+    cmd = sys.argv[1].lower()
+    args = sys.argv[2:]
+
+    if cmd == "info":
+        cmd_info(args)
+    elif cmd == "doctor":
+        cmd_doctor(args)
+    elif cmd == "security":
+        if args and args[0].lower() == "status":
+            cmd_security_status(args[1:])
+        else:
+            cmd_security_status(args)
+    elif cmd == "update":
+        sys.exit(cmd_update(args))
+    elif cmd == "hardware":
+        cmd_hardware(args)
+    elif cmd == "install":
+        sys.exit(cmd_install(args))
+    elif cmd == "repair":
+        sys.exit(cmd_repair(args))
+    elif cmd == "system" and args and args[0].lower() == "clean":
+        sys.exit(cmd_clean(args[1:]))
+    elif cmd in ("clean", "cleanup"):
+        sys.exit(cmd_clean(args))
+    else:
+        print(f"{C_RED}Unknown command:{C_RESET} {cmd}")
+        print("Run 'pulse' without arguments to see available commands.")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

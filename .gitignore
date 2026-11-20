@@ -1,0 +1,22 @@
+# Pulse Linux Build Artifacts
+build/work/
+build/tmp/
+build/cache/*.deb
+build/cache/*.tar.*
+*.iso
+*.squashfs
+*.qcow2
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+
+# Editor & OS files
+.DS_Store
+*~
+*.swp
+*.bak

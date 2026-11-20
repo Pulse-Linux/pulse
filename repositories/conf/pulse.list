@@ -1,0 +1,20 @@
+# Pulse Linux Official Package Repositories
+# Base Debian Stable Foundation
+deb http://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+
+# Debian Security Updates
+deb http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
+deb-src http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
+
+# Debian Stable Updates
+deb http://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware
+
+# Pulse Linux Custom Repositories
+# Channels: pulse-stable (production), pulse-security (verified fixes), pulse-extras (optional)
+deb [signed-by=/etc/apt/keyrings/pulse-archive-keyring.gpg] https://pkg.pulselinux.org/debian pulse-stable main
+# deb [signed-by=/etc/apt/keyrings/pulse-archive-keyring.gpg] https://pkg.pulselinux.org/debian pulse-testing main
+# deb [signed-by=/etc/apt/keyrings/pulse-archive-keyring.gpg] https://pkg.pulselinux.org/debian pulse-development main
+deb [signed-by=/etc/apt/keyrings/pulse-archive-keyring.gpg] https://pkg.pulselinux.org/debian pulse-security main
+deb [signed-by=/etc/apt/keyrings/pulse-archive-keyring.gpg] https://pkg.pulselinux.org/debian pulse-extras main
